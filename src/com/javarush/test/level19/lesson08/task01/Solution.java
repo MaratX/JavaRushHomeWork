@@ -7,11 +7,21 @@ package com.javarush.test.level19.lesson08.task01;
 Верните переменной System.out первоначальный поток.
 Вывести модифицированную строку в консоль.
 */
+import java.io.*;
 
 public class Solution {
     public static TestString testString = new TestString();
 
     public static void main(String[] args) {
+        PrintStream defaultPrintStream = System.out;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        PrintStream newPrintStream = new PrintStream(byteArrayOutputStream);
+        System.setOut(newPrintStream);
+        testString.printSomething();
+        System.setOut(defaultPrintStream);
+
+        String result = byteArrayOutputStream.toString().toUpperCase();
+        System.out.println(result);
     }
 
     public static class TestString {
