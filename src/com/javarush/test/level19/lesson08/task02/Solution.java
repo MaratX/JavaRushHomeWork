@@ -8,15 +8,36 @@ package com.javarush.test.level19.lesson08.task02;
 Вывести модифицированную строку в консоль.
 */
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 public class Solution {
     public static TestString testString = new TestString();
 
     public static void main(String[] args) {
+        PrintStream printStream = System.out;
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        PrintStream failStream = new PrintStream(byteArrayOutputStream);
+        System.setOut(failStream);
+
+        testString.printSomething();
+
+        String newText = byteArrayOutputStream.toString();
+
+        System.setOut(printStream);
+
+        newText = newText.replaceAll("te", "??");
+
+        System.out.println(newText);
+
+
     }
 
     public static class TestString {
         public void printSomething() {
             System.out.println("it's a text for testing");
-    }
+        }
     }
 }
