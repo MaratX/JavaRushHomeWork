@@ -7,12 +7,23 @@ package com.javarush.test.level18.lesson05.task05;
 2.2 выбросить исключение DownloadException
 */
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class Solution {
-    public static void main(String[] args) throws DownloadException {
+    public static void main(String[] args) throws DownloadException, IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        FileInputStream in;
+
+        while(true){
+            in = new FileInputStream(new File(reader.readLine()));
+            if(in.available() < 1000){
+                in.close();
+                reader.close();
+                throw new DownloadException();
+            }
+            in.close();
+        }
+
 
     }
 
