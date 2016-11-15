@@ -1,20 +1,25 @@
 package com.javarush.test.level22.lesson05.home01;
 
-public class Task implements Runnable {
+public class Task implements Runnable
+{
     private String initialString;
     private Solution solution;
 
-    public Task(Solution solution, String initialString) {
+    public Task(Solution solution, String initialString)
+    {
         this.solution = solution;
         this.initialString = initialString;
     }
 
     @Override
-    public void run() {
+    public void run()
+    {
         String name = Thread.currentThread().getName();
         String str = this.initialString;
-        do {
+        do
+        {
             System.out.println(name + str);
-        } while ((str = solution.getPartOfString(str, name)) != null || !str.isEmpty());
+        }
+        while ((str = solution.getPartOfString(str, name)) != null || !str.isEmpty());
     }
 }
