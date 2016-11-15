@@ -56,7 +56,8 @@ public class Solution {
     protected void finalize() throws Throwable {
         super.finalize();
         System.out.println("inside finalize - before throwing");
-        utilizator.dispose();   //исключения игнорируются в finalize
+        utilizator.dispose();
+        //исключения игнорируются в finalize
         System.out.println("inside finalize - after throwing");
     }
 
@@ -72,7 +73,11 @@ public class Solution {
     public static class SpecificUtilizator extends Utilizator {
         @Override
         public void dispose() {
-            util.throwException();
+            try
+            {
+                util.throwException();
+            }
+            catch (RuntimeException r) {}
         }
     }
 
