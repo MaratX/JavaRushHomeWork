@@ -14,8 +14,6 @@ public class Solution {
         this.city = city;
     }
 
-    /*т.к. модификатор иннер класса private, то чтобы вызвать метод getDescription из другого внешнего класса,
-    нужно обернуть его вызов в какой-то public метод*/
     public String getDescriptionOfUser(String name) {
         return getTrickyUser(name).getDescription();
     }
@@ -27,22 +25,18 @@ public class Solution {
     private class SuperUser {
         private String name;
 
-        //доступ к этому методу возможен только внутри класса Solution, т.к. модификатор иннер класса private
         public SuperUser(String name) {
             this.name = name;
         }
 
-        //доступ к этому методу возможен только внутри класса Solution, т.к. модификатор иннер класса private
         public String getDescription() {
-            return String.format("My name is %s.", this.name);
+            return String.format("My name is %s. I'm from %s, %s.", this.name, Solution.this.country, Solution.this.city);
         }
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution("the USA", "Seattle");
-        //внутри класса Solution (а сейчас мы внутри) к методу getDescription можно обращаться обоими способами
         System.out.println(solution.getTrickyUser("George").getDescription());
-        //а из любого другого внешнего класса только так:
         System.out.println(solution.getDescriptionOfUser("George"));
     }
 }
