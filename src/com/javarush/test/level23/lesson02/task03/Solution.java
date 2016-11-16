@@ -1,11 +1,11 @@
-package com.javarush.test.level23.lesson02.task01;
+package com.javarush.test.level23.lesson02.task03;
 
-/* Запретите наследование
-Запретите наследование от класса Listener.
+/* Запретите создание экземпляров класса
+Запретите создание экземпляров класса Listener.
 */
 public class Solution {
 
-    public final static class Listener {
+    public static class Listener {
         public void onMouseDown(int x, int y) {
             //do something on mouse down event
         }
