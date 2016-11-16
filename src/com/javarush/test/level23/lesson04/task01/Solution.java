@@ -13,6 +13,12 @@ public class Solution {
 
     public static Solution[] getTwoSolutions() {
 
-        return null;
+        Solution solution1 = new Solution();
+        Solution solution2 = new Solution();
+        solution1.innerClasses[0] = solution1.new InnerClass();
+        solution1.innerClasses[1] = solution1.new InnerClass();
+        solution2.innerClasses[0] = solution2.new InnerClass();
+        solution2.innerClasses[1] = solution2.new InnerClass();
+        return new Solution[]{solution1, solution2};
     }
 }
