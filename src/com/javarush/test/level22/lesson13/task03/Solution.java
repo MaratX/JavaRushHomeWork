@@ -23,9 +23,14 @@ package com.javarush.test.level22.lesson13.task03;
 050123456 - false
 (0)501234567 - false
 */
-public class Solution {
+public class Solution
+{
 
-    public static boolean checkTelNumber(String telNumber) {
-        return false;
+    public static boolean checkTelNumber(String telNumber)
+    {
+
+        return ((telNumber.matches("^\\+[\\(\\-]?(\\d[\\(\\)\\-]?){11}\\d$") || telNumber.matches("^\\(?(\\d[\\-\\(\\)]?){9}\\d$"))
+                && telNumber.matches("[\\+]?\\d*(\\(\\d{3}\\))?\\d*\\-?\\d*\\-?\\d*\\d$"));
+
     }
 }
