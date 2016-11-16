@@ -3,30 +3,29 @@ package com.javarush.test.level28.lesson15.big01;
 import com.javarush.test.level28.lesson15.big01.model.Provider;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by HMF on 14.11.2016.
  */
 public class Controller
 {
-    private ArrayList<Provider> providers = new ArrayList<Provider>();
+    private Provider [] providers;
 
     public Controller(Provider... pro)
     {
-        if(pro != null){
-            for(Provider p : pro){
-                providers.add(p);
-            }
-        }else {
-            new IllegalArgumentException();
+        if(pro.length == 0){
+            throw new IllegalArgumentException();
         }
+        providers = pro;
+
     }
 
     @Override
     public String toString()
     {
         return "Controller{" +
-                "providers=" + providers +
+                "providers=" + Arrays.toString(providers) +
                 '}';
     }
 }
