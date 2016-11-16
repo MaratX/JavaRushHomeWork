@@ -1,7 +1,5 @@
 package com.javarush.test.level22.lesson13.task03;
 
-import java.util.regex.Pattern;
-
 /* Проверка номера телефона
 Метод checkTelNumber должен проверять, является ли аргумент telNumber валидным номером телефона.
 Критерии валидности:
@@ -26,15 +24,8 @@ import java.util.regex.Pattern;
 (0)501234567 - false
 */
 public class Solution {
-    public static void main(String[] args){
-        System.out.println(checkTelNumber("+050123456"));
-    }
 
     public static boolean checkTelNumber(String telNumber) {
-        if(Pattern.matches("", telNumber)){
-            return true;
-        }
         return false;
     }
-
 }
