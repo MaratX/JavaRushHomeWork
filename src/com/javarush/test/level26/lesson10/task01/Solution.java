@@ -16,7 +16,15 @@ public class Solution {
     protected Lock lock = new ReentrantLock();
 
     public void someMethod() {
-        //implement logic here, use the lock field
+        if (lock.tryLock()) {
+            try {
+                ifLockIsFree();
+            } finally {
+                lock.unlock();
+            }
+        } else {
+            ifLockIsBusy();
+        }
     }
 
     public void ifLockIsFree() {
