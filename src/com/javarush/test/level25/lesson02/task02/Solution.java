@@ -1,9 +1,6 @@
 package com.javarush.test.level25.lesson02.task02;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /* Машину на СТО не повезем!
 Инициализируйте поле wheels используя данные из loadWheelNamesFromDB.
@@ -12,6 +9,7 @@ import java.util.Set;
 Сигнатуры не менять.
 */
 public class Solution {
+
     public static enum Wheel {
         FRONT_LEFT,
         FRONT_RIGHT,
@@ -23,7 +21,9 @@ public class Solution {
         protected List<Wheel> wheels;
 
         public Car() {
-            //init wheels here
+            wheels = new ArrayList<>();
+            for (String currentWheel : loadWheelNamesFromDB())
+                wheels.add(Wheel.valueOf(currentWheel));
         }
 
         protected String[] loadWheelNamesFromDB() {
