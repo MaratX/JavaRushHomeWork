@@ -18,7 +18,7 @@ public class Solution {
 
         int getLetterPosition() {
 
-            return -1;
+            return this.ordinal() + 1;
         }
     }
 }
