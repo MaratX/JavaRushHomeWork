@@ -32,7 +32,7 @@ public class Solution {
         String[] filepart = {"closed {4}", "open {2} and last {3}"};
 
         ChoiceFormat fileform = new ChoiceFormat(filelimits, filepart);
-        Format[] testFormats = {null, dateFormat, fileform};
+        Format[] testFormats = {null, null, dateFormat, fileform};
         MessageFormat pattform = new MessageFormat("{0}   {1} | {5} {6}");
         pattform.setFormats(testFormats);
 
@@ -51,9 +51,36 @@ public class Solution {
     public static void sort(List<Stock> list) {
         Collections.sort(list, new Comparator<Stock>() {
             public int compare(Stock stock1, Stock stock2) {
-                return 0;
+                int compareNames = ((String)stock1.get("name")).compareTo((String)stock2.get("name"));
+                if(compareNames != 0)
+                    return compareNames;
+                else {
+                    int compareDate = ((Date)stock1.get("date")).compareTo((Date)stock2.get("date"));
+                    if (compareDate != 0)
+                        return compareDate;
+                    else {
+                        Double change1;
+                        Double change2;
+                        if (stock1.containsKey("change")) {
+                            change1 = (Double)stock1.get("change");
+                        } else
+                            change1 = (Double)stock1.get("last") - (Double)stock1.get("open");
+
+                        if (stock2.containsKey("change")) {
+                            change2 = (Double)stock2.get("change");
+                        } else
+                            change2 = (Double)stock2.get("last") - (Double)stock2.get("open");
+
+                        int compareChanges = change2.compareTo(change1);
+                        if (compareChanges != 0)
+                            return compareChanges;
+                        else
+                            return 0;
+                    }
+                }
             }
         });
+
     }
 
     public static class Stock extends HashMap {
@@ -77,6 +104,8 @@ public class Solution {
         List<Stock> stocks = new ArrayList();
 
         stocks.add(new Stock("Fake Apple Inc.", "AAPL", 125.64, 123.43));
+        stocks.add(new Stock("Fake Apple Inc.", "AAPL", 125.64, 123.43));
+        stocks.add(new Stock("Fake Apple Inc.", "AAPL", 125.64, 123.43));
         stocks.add(new Stock("Fake Cisco Systems, Inc.", "CSCO", 25.84, 26.3));
         stocks.add(new Stock("Fake Google Inc.", "GOOG", 516.2, 512.6));
         stocks.add(new Stock("Fake Intel Corporation", "INTC", 21.36, 21.53));
@@ -85,12 +114,15 @@ public class Solution {
 
         stocks.add(new Stock("Fake Nokia Corporation (ADR)", "NOK", .1, getRandomDate()));
         stocks.add(new Stock("Fake Oracle Corporation", "ORCL", .15, getRandomDate()));
+        stocks.add(new Stock("Fake Oracle Corporation", "ORCL", .25, new Date()));
+        stocks.add(new Stock("Fake Oracle Corporation", "ORCL", .35, new Date()));
         stocks.add(new Stock("Fake Starbucks Corporation", "SBUX", .03, getRandomDate()));
         stocks.add(new Stock("Fake Yahoo! Inc.", "YHOO", .32, getRandomDate()));
         stocks.add(new Stock("Fake Applied Materials, Inc.", "AMAT", .26, getRandomDate()));
         stocks.add(new Stock("Fake Comcast Corporation", "CMCSA", .5, getRandomDate()));
-        stocks.add(new Stock("Fake Sirius Satellite", "SIRI", -.03, getRandomDate()));
-
+        stocks.add(new Stock("Fake Sirius Satellite", "SIRI", -.03, new Date()));
+        stocks.add(new Stock("Fake Sirius Satellite", "SIRI", 0, new Date()));
+        stocks.add(new Stock("Fake Sirius Satellite", "SIRI", .03, new Date()));
         return stocks;
     }
 
@@ -106,4 +138,3 @@ public class Solution {
         return calendar.getTime();
     }
 }
-
