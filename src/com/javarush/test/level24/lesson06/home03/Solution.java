@@ -1,5 +1,7 @@
 package com.javarush.test.level24.lesson06.home03;
 
+import java.util.List;
+
 /* Интернет-магазин продажи джинсов
 1.Внутри файла Solution.java, но НЕ внутри класса Solution создайте 2 интерфейса:
 1.1) Item с методами int getId(), double getPrice(), String getTM()
@@ -21,4 +23,15 @@ public class Solution {
         }
     }
 
+}
+
+interface Item {
+    public int getId();
+    public double getPrice();
+    public String getTM();
+}
+
+interface Jeans extends Item {
+    public int getLength();
+    public int getSize();
 }
