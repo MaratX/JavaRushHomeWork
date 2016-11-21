@@ -34,4 +34,9 @@ public class GeneratorNumber
         Date d = new Date();
         return  ((d.getTime() * u^2) / i)%i;
     }
+
+    /**
+     * LocalTime localTime = LocalTime.now();
+     *System.out.println(localTime.getNano());
+     */
 }
