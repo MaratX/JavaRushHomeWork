@@ -1,7 +1,7 @@
-package com.javarush.test.level24.lesson06.home01;
+package com.javarush.test.level24.lesson06.home02;
 
 /*
-обратите внимание, как именно Mouse отличается от Cat
+обратите внимание, как именно Mouse отличается от Dog
 Этот класс - привычный для вас.
 */
 public class Mouse implements Pet, Sayable {
