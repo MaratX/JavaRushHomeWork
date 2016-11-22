@@ -33,8 +33,7 @@ public class Solution {
 
             Calendar calendar = new GregorianCalendar(Integer.parseInt(split[5]), Integer.parseInt(split[4]) - 1, Integer.parseInt(split[3]));
             Date date = calendar.getTime();
-            Person person = new Person(split[1], split[2], split[0], date);
-            return person;
+            return new Person(split[1], split[2], split[0], date);
 
         }
 

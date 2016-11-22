@@ -39,13 +39,12 @@ public class Solution {
         @Override
         public String getPhoneNumber()
         {
-            String m = String.format("+%d(%2$s)%3$s-%4$s-%5$s",data.getCountryPhoneCode(),
+
+            return String.format("+%d(%2$s)%3$s-%4$s-%5$s",data.getCountryPhoneCode(),
                     String.format("%010d", data.getPhoneNumber()).substring(0, 3),
                     String.format("%010d", data.getPhoneNumber()).substring(3, 6),
                     String.format("%010d", data.getPhoneNumber()).substring(6, 8),
                     String.format("%010d", data.getPhoneNumber()).substring(8));
-
-            return m;
 
         }
 

@@ -85,7 +85,6 @@ public class Solution {
                             tempBuilder.reverse();
                             toDelete.add(s);
                             wordCounter++;
-                            continue;
                         }
                     }
                     // удаляем уже вставленные слова

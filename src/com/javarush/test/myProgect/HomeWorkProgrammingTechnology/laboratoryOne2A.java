@@ -28,10 +28,7 @@ public class laboratoryOne2A
        Сравнение на  минимум
    ------------------------ */
     private boolean min(int one, int two){
-        if(one > two){
-            return true;
-        }
-        return false;
+        return one > two;
     }
     /*----------------------
         Сортировка N^2 ('2А')
