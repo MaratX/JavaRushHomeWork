@@ -1,9 +1,6 @@
 package com.javarush.test.level32.lesson04.home01;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
+import java.io.*;
 
 /* Читаем из потока
 Реализуйте логику метода getAllDataFromInputStream. Он должен вернуть StringWriter, содержащий все данные из переданного потока.
@@ -17,6 +14,17 @@ public class Solution {
     }
 
     public static StringWriter getAllDataFromInputStream(InputStream is) throws IOException {
-        return null;
+        StringWriter stringWriter = new StringWriter();
+        if (is != null) {
+            InputStreamReader inputStreamReader = new InputStreamReader(is);
+            char[] buf = new char[1024];
+            int count;
+            while (inputStreamReader.ready()) {
+                count = inputStreamReader.read(buf);
+                stringWriter.write(buf, 0, count);
+            }
+            inputStreamReader.close();
+        }
+        return stringWriter;
     }
 }
