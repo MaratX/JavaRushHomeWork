@@ -13,6 +13,8 @@ import java.util.ResourceBundle;
 public class ConsoleHelper
 {
 
+
+
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public static void writeMessage(String message)
