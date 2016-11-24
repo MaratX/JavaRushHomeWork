@@ -14,13 +14,26 @@ public class Figure
     public void left(){}
     public void right(){}
     public void down(){}
-    public void up(){}
+    public void up(){
+        y--;
+    }
     public void downMaximum(){}
     public void rotate(){}
     public boolean isCurrentPositionAvailable(){
         return true;
     }
-    public void landed(){}
+    public void landed(){
+        Field field = Tetris.game.getField();
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (matrix[i][j] == 1)
+                    field.setValue(x + j, y + i, 1);
+            }
+        }
+    }
 
 
     public void setX(int x)

@@ -13,15 +13,11 @@ import java.util.ResourceBundle;
 public class ConsoleHelper
 {
 
-
-
-    private static ResourceBundle res = ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "common_en");
-
     static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public static void writeMessage(String message)
     {
-        System.out.println(message);
+        System.out.print(message);
     }
 
 
@@ -32,8 +28,6 @@ public class ConsoleHelper
         try
         {
             message = reader.readLine();
-            if (message.equalsIgnoreCase(res.getString("operation.EXIT")))
-                throw new InterruptOperationException();
         }
         catch (IOException ignored)
         {
