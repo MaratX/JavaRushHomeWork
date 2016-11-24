@@ -1,6 +1,7 @@
 package com.javarush.test.level32.lesson10.home01;
 
 import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -24,6 +25,17 @@ public class Solution {
         @Override
         public void run() {
             //TODO add your code here - добавьте код тут
+            try {
+                DoubleString doubleString = (DoubleString)registry.lookup(UNIC_BINDING_NAME);
+                String result = doubleString.doubleString("asd");
+                System.out.println(result);
+            }
+            catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            catch (NotBoundException e) {
+                e.printStackTrace();
+            }
         }
     });
 

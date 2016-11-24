@@ -120,12 +120,6 @@ public class Field
      */
     public void removeFullLines()
     {
-        for(int one = 0; one < height; one++){
-            for(int two = 0; two < width; two++){
-                matrix[one][two] = 1;
-            }
-        }
-
         //Например так:
         //Создаем список для хранения линий
         //Копируем все непустые линии в список.
