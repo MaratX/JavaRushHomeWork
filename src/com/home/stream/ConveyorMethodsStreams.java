@@ -4,6 +4,7 @@ import sun.util.resources.LocaleData;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.stream.Collector;
@@ -25,9 +26,9 @@ public class ConveyorMethodsStreams
         listInt.add(4);
         listInt.add(4);
 
-        for(int i = 0; i < 1000000; i++)
+        for(int i = 0; i < 100; i++)
         {
-            listString.add("w");
+            listString.add("w" + i);
         }
 
     }
@@ -37,8 +38,15 @@ public class ConveyorMethodsStreams
         //CMS.StreamFilterCounter(CMS.getListString());
         //CMS.StreamSkipe(CMS.getListInt());
         //CMS.StreamDistinc(CMS.getListString());
-        System.out.println();
-        CMS.StreamMap(CMS.getListString());
+        //System.out.println();
+        //CMS.StreamMap(CMS.getListString());
+        //CMS.getListInt().stream().sorted().forEach(x -> System.out.print(x + " "));
+        //System.out.println();
+        String [] list = CMS.getListString().stream().flatMap((p) -> Arrays.asList(p.split(",")).stream()).toArray(String[]::new);
+        for(int i = 0; i < list.length; i++){
+            System.out.println(list[i]);
+        }
+
 
     }
 
