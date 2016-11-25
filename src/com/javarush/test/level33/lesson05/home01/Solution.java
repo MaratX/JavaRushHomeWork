@@ -1,12 +1,16 @@
 package com.javarush.test.level33.lesson05.home01;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 /* Первая сериализация в JSON
-НЕОБХОДИМО: подключенные библиотеки Jackson Core, Bind и Annotation версии 2.6.1
-
+НЕОБХОДИМО: подключенные библиотеки Jackson Core, Bind и Annotation версии 2.4.3
 1) В программе не выполнено основное требование к сериализации в JSON.
 Найдите ошибку и исправьте.
 2) Расставьте правильно Json аннотации у классов.
@@ -39,20 +43,25 @@ public class Solution {
         mapper.writeValue(writer, object);
     }
 
-    public static class Pet
-    {
+
+    public static class Pet {
+        @JsonProperty
         String name;
     }
 
-    public static class Cat extends Pet
-    {
+
+    public static class Cat extends Pet {
+        @JsonProperty
         int age;
+        @JsonProperty
         int weight;
     }
 
-    public static class Dog extends Pet
-    {
+
+    public static class Dog extends Pet {
+        @JsonProperty
         int age;
+        @JsonProperty
         String owner;
     }
 }
