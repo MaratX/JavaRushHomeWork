@@ -10,26 +10,33 @@ import java.net.SocketAddress;
 /**
  * Created by HMF on 24.11.2016.
  */
-public class Connection implements Closeable
-{
+public class Connection implements Closeable {
+
     private final Socket socket;
     private final ObjectOutputStream out;
     private final ObjectInputStream in;
 
-    public Connection(Socket socket) throws IOException
-    {
+
+    //Constructor
+    public Connection(Socket socket) throws IOException {
         this.socket = socket;
         this.out = new ObjectOutputStream(socket.getOutputStream());
         this.in = new ObjectInputStream(socket.getInputStream());
     }
 
-    public void send(Message message) throws IOException{
-        synchronized (out) {
+
+    public void send(Message message) throws IOException {
+
+        synchronized (out)
+        {
             out.writeObject(message);
             out.flush();
 
         }
+
     }
+
+
     public Message receive() throws IOException, ClassNotFoundException {
 
         Message message;
@@ -40,6 +47,8 @@ public class Connection implements Closeable
         }
 
     }
+
+
     public SocketAddress getRemoteSocketAddress() {
 
         return socket.getRemoteSocketAddress();
@@ -52,4 +61,5 @@ public class Connection implements Closeable
         out.close();
         socket.close();
     }
+
 }

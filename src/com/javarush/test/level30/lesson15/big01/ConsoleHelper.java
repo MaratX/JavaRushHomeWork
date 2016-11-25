@@ -7,14 +7,18 @@ import java.io.InputStreamReader;
 /**
  * Created by HMF on 24.11.2016.
  */
-public class ConsoleHelper
-{
-    public static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+public class ConsoleHelper {
 
-    public static void writeMessage(String message){
+    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+
+    public static void writeMessage(String message) {
         System.out.println(message);
     }
-    public static String readString(){
+
+
+    public static String readString() {
+
         String message;
 
         while (true) {
@@ -28,8 +32,8 @@ public class ConsoleHelper
             }
         }
         return message;
-
     }
+
 
     public static int readInt() {
 
