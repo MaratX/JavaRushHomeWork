@@ -1,6 +1,8 @@
 package com.javarush.test.level33.lesson05.home03;
 
-import java.io.IOException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.*;
 
 /* Десериализация JSON объекта
 НЕОБХОДИМО: подключенные библиотеки Jackson Core, Bind и Annotation версии 2.6.1
@@ -12,6 +14,7 @@ import java.io.IOException;
 public class Solution {
 
     public static <T> T convertFromJsonToNormal(String fileName, Class<T> clazz) throws IOException {
-        return null;
+        ObjectMapper om = new ObjectMapper();
+        return om.readValue(new File(fileName), clazz);
     }
 }
