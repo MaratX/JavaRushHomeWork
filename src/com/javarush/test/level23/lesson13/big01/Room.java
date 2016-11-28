@@ -84,18 +84,18 @@ public class Room
                 //Если "стрелка влево" - сдвинуть фигурку влево
                 if (event.getKeyCode() == KeyEvent.VK_LEFT)
                     snake.setDirection(SnakeDirection.LEFT);
-                //Если "стрелка вправо" - сдвинуть фигурку вправо
+                    //Если "стрелка вправо" - сдвинуть фигурку вправо
                 else if (event.getKeyCode() == KeyEvent.VK_RIGHT)
                     snake.setDirection(SnakeDirection.RIGHT);
-                //Если "стрелка вверх" - сдвинуть фигурку вверх
+                    //Если "стрелка вверх" - сдвинуть фигурку вверх
                 else if (event.getKeyCode() == KeyEvent.VK_UP)
                     snake.setDirection(SnakeDirection.UP);
-                //Если "стрелка вниз" - сдвинуть фигурку вниз
+                    //Если "стрелка вниз" - сдвинуть фигурку вниз
                 else if (event.getKeyCode() == KeyEvent.VK_DOWN)
                     snake.setDirection(SnakeDirection.DOWN);
             }
 
-            snake.move();   //двигаем змею
+            snake.move(0, 2);   //двигаем змею
             print();        //отображаем текущее состояние игры
             sleep();        //пауза между ходами
         }

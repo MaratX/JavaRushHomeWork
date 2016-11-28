@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
  */
 public class Tetris
 {
+
     private Field field;                //Поле с клетками
     private Figure figure;              //Фигурка
 
@@ -65,7 +66,7 @@ public class Tetris
                 //Если "стрелка вправо" - сдвинуть фигурку вправо
                 else if (event.getKeyCode() ==  KeyEvent.VK_RIGHT)
                     figure.right();
-                //Если  код клавишы равен 12 ("цифра 5 на доп. клавиатуре") - повернуть фигурку
+                //Если  код клавиши равен 12 ("цифра 5 на доп. клавиатуре") - повернуть фигурку
                 else if (event.getKeyCode() ==  12)
                     figure.rotate();
                 //Если "пробел" - фигурка падает вниз на максимум
@@ -82,11 +83,9 @@ public class Tetris
         System.out.println("Game Over");
     }
 
-    /**
-     * Один шаг игры
-     */
     public void step()
     {
+        //опускам фигурку вниз
         figure.down();
 
         //если разместить фигурку на текущем месте невозможно
@@ -99,10 +98,8 @@ public class Tetris
 
             field.removeFullLines();        //удаляем заполненные линии
 
-            figure = FigureFactory.createRandomFigure(field.getWidth() / 2, 0);
-
+            figure = FigureFactory.createRandomFigure(field.getWidth() / 2, 0); //создаем новую фигурку
         }
-
     }
 
     /**
