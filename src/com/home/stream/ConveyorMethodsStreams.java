@@ -1,12 +1,10 @@
 package com.home.stream;
 
+import com.javarush.test.level24.lesson02.task02.Solution;
 import sun.util.resources.LocaleData;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -34,20 +32,14 @@ public class ConveyorMethodsStreams
     }
 
     public static void main(String... args){
-        ConveyorMethodsStreams CMS = new ConveyorMethodsStreams();
-        //CMS.StreamFilterCounter(CMS.getListString());
-        //CMS.StreamSkipe(CMS.getListInt());
-        //CMS.StreamDistinc(CMS.getListString());
-        //System.out.println();
-        //CMS.StreamMap(CMS.getListString());
-        //CMS.getListInt().stream().sorted().forEach(x -> System.out.print(x + " "));
-        //System.out.println();
-        String [] list = CMS.getListString().stream().flatMap((p) -> Arrays.asList(p.split(",")).stream()).toArray(String[]::new);
-        for(int i = 0; i < list.length; i++){
-            System.out.println(list[i]);
+
+        ArrayList<String> list = new ArrayList<>();
+        for(int i = 0; i < 100; i++){
+            list.add("Ý");
         }
-
-
+        for(String l : list){
+            System.out.print(l);
+        }
     }
 
     public void StreamFilterCounter(ArrayList<String> collections){
