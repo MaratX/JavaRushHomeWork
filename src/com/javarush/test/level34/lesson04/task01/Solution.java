@@ -1,5 +1,6 @@
 package com.javarush.test.level34.lesson04.task01;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class Solution {
         helper.startTime();
 
         Monkey monkey = new Monkey("Simka");
+        SoftReference<Monkey> reference = new SoftReference<Monkey>(monkey);
 
         helper.callGC();
 
