@@ -79,7 +79,13 @@ public class Solution {
         }
 
         public List<PhantomReference<Monkey>> getFilledList() {
-            return null;
+
+            ArrayList<PhantomReference<Monkey>> list = new ArrayList<PhantomReference<Monkey>>();
+            for (int i = 0; i < 200; i++) {
+                Monkey m = new Monkey();
+                list.add(new PhantomReference<Monkey>(m, helper.getQueue()));
+            }
+            return list;
         }
 
         public void finish() throws InterruptedException {
