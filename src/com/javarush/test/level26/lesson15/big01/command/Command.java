@@ -5,6 +5,7 @@ import com.javarush.test.level26.lesson15.big01.exception.InterruptOperationExce
 /**
  * Created by HMF on 24.11.2016.
  */
-interface Command {
+interface Command
+{
     void execute() throws InterruptOperationException;
 }

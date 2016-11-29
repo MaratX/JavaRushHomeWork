@@ -12,12 +12,13 @@ import java.util.ResourceBundle;
 /**
  * Created by HMF on 24.11.2016.
  */
-public class WithdrawCommand implements Command
+class WithdrawCommand implements Command
 {
     private ResourceBundle res = ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "withdraw_en");
     @Override
     public void execute() throws InterruptOperationException
     {
+
         ConsoleHelper.writeMessage("Enter currency code");
         String currencyCode = ConsoleHelper.askCurrencyCode();
         CurrencyManipulator currencyManipulator = CurrencyManipulatorFactory.getManipulatorByCurrencyCode(currencyCode);
@@ -26,34 +27,35 @@ public class WithdrawCommand implements Command
         {
             ConsoleHelper.writeMessage(res.getString("before"));
             String s = ConsoleHelper.readString();
-            try
-            {
+
+            try {
                 sum = Integer.parseInt(s);
-            } catch (NumberFormatException e)
-            {
+
+            } catch (NumberFormatException e) {
                 ConsoleHelper.writeMessage(res.getString("specify.amount"));
                 continue;
             }
-            if (sum <= 0)
-            {
+
+            if (sum <= 0) {
                 ConsoleHelper.writeMessage(res.getString("specify.not.empty.amount"));
                 continue;
             }
-            if (!currencyManipulator.isAmountAvailable(sum))
-            {
+
+            if (!currencyManipulator.isAmountAvailable(sum)) {
                 ConsoleHelper.writeMessage(res.getString("not.enough.money"));
                 continue;
             }
-            try
-            {
+
+            try {
                 currencyManipulator.withdrawAmount(sum);
-            } catch (NotEnoughMoneyException e)
-            {
+            } catch (NotEnoughMoneyException e) {
                 ConsoleHelper.writeMessage(res.getString("exact.amount.not.available"));
                 continue;
             }
+
             ConsoleHelper.writeMessage(String.format(res.getString("success.format"), sum, currencyCode));
             break;
+
         }
 
     }

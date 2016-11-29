@@ -8,8 +8,43 @@ import java.util.*;
  * Created by HMF on 24.11.2016.
  */
 public class CurrencyManipulator {
+
     private String currencyCode;
     private Map<Integer, Integer> denominations = new HashMap<>();
+
+
+    public CurrencyManipulator(String currencyCode) {
+        this.currencyCode = currencyCode;
+    }
+
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+
+    public void addAmount(int denomination, int count) {
+
+        if(denominations.containsKey(denomination))
+            denominations.put(denomination, denominations.get(denomination) + count);
+        else
+            denominations.put(denomination,count);
+    }
+
+
+    public int getTotalAmount() {
+        int result = 0;
+
+        for(Map.Entry<Integer,Integer> pair : denominations.entrySet()) {
+            result = result + (pair.getKey() * pair.getValue());
+        }
+
+
+        return result;
+    }
+
+    public boolean hasMoney(){
+        return denominations.size() != 0;
+    }
 
     public boolean isAmountAvailable(int expectedAmount)
     {
@@ -21,6 +56,7 @@ public class CurrencyManipulator {
         int sum = expectedAmount;
         HashMap<Integer, Integer> temp = new HashMap<>();
         temp.putAll(denominations);
+
         ArrayList<Integer> list = new ArrayList<>();
         for (Map.Entry<Integer, Integer> pair : temp.entrySet())
             list.add(pair.getKey());
@@ -64,37 +100,10 @@ public class CurrencyManipulator {
 
             denominations.clear();
             denominations.putAll(temp);
-            ConsoleHelper.writeMessage("Transaction was successful!");
+            ConsoleHelper.writeMessage("Transaction complete successfully");
         }
         return result;
     }
 
-    public CurrencyManipulator(String currencyCode)
-    {
-        this.currencyCode = currencyCode;
-    }
 
-    public String getCurrencyCode()
-    {
-        return currencyCode;
-    }
-
-    public void addAmount(int denomination, int count){
-        if(denominations.containsKey(denomination))
-            denominations.put(denomination, denominations.get(denomination) + count);
-        else
-            denominations.put(denomination,count);
-    }
-
-    public int getTotalAmount(){
-        int result = 0;
-        for(Map.Entry<Integer,Integer> pair : denominations.entrySet())
-            result = result + (pair.getKey() * pair.getValue());
-
-        return result;
-    }
-
-    public boolean hasMoney(){
-        return denominations.size() != 0;
-    }
 }

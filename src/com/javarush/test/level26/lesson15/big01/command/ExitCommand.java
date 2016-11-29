@@ -9,15 +9,16 @@ import java.util.ResourceBundle;
 /**
  * Created by HMF on 24.11.2016.
  */
-public class ExitCommand implements Command
-{
-    private ResourceBundle res = ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "exit_en");
-    @Override
-    public void execute() throws InterruptOperationException
-    {
-        ConsoleHelper.writeMessage(res.getString("exit.question.y.n"));
+class ExitCommand implements Command {
 
-        if (ConsoleHelper.readString().equals(res.getString("yes")))
+    private ResourceBundle res = ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "exit_en");
+
+    @Override
+    public void execute() throws InterruptOperationException {
+        ConsoleHelper.writeMessage(res.getString("exit.question.y.n"));
+        if (ConsoleHelper.readString().equals("yes"))
             ConsoleHelper.writeMessage(res.getString("thank.message"));
     }
+
+
 }

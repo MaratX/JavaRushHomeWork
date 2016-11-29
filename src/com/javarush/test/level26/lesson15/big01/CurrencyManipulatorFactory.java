@@ -7,27 +7,34 @@ import java.util.Map;
 /**
  * Created by HMF on 24.11.2016.
  */
-public class CurrencyManipulatorFactory {
+public final class CurrencyManipulatorFactory {
 
-    private static Map<String, CurrencyManipulator> currencyManipulators = new HashMap<>();
+    static HashMap<String, CurrencyManipulator> map = new HashMap<>();
+    static boolean isExist = false;
 
-    // private
-    private CurrencyManipulatorFactory() {
+    public static CurrencyManipulator getManipulatorByCurrencyCode(String currencyCode)
+    {
+        isExist = false;
+        CurrencyManipulator current;
+
+        if (map.containsKey(currencyCode))
+            return map.get(currencyCode);
+        else {
+            current = new CurrencyManipulator(currencyCode);
+            map.put(currencyCode, current);
+            return current;
+        }
     }
 
-    public static CurrencyManipulator getManipulatorByCurrencyCode(String currencyCode) {
-        if (currencyManipulators.containsKey(currencyCode)) {
-            return currencyManipulators.get(currencyCode);
-        } else {
-            CurrencyManipulator newCurrencyManipulator = new CurrencyManipulator(currencyCode);
-            currencyManipulators.put(currencyCode, newCurrencyManipulator);
-            return newCurrencyManipulator;
-        }
+    private CurrencyManipulatorFactory()
+    {
     }
 
     public static Collection<CurrencyManipulator> getAllCurrencyManipulators()
     {
-        return currencyManipulators.values();
+        return map.values();
     }
+
+
 
 }
