@@ -6,18 +6,24 @@ import java.io.Serializable;
  * Created by FarAway on 10.03.2016.
  */
 public class Message implements Serializable {
-    final private MessageType type;
-    final private String data;
+
+    private final MessageType type;
+    private final String data;
+
+
+    //Constructors
+    public Message(MessageType type, String data) {
+        this.type = type;
+        this.data = data;
+    }
 
     public Message(MessageType type) {
         this.type = type;
         this.data = null;
     }
 
-    public Message(MessageType type, String data) {
-        this.type = type;
-        this.data = data;
-    }
+
+    //getters
 
     public MessageType getType() {
         return type;
@@ -25,13 +31,5 @@ public class Message implements Serializable {
 
     public String getData() {
         return data;
-    }
-
-    @Override
-    public String toString() {
-        return "Message{" +
-                "type=" + type +
-                ", data='" + data + '\'' +
-                '}';
     }
 }

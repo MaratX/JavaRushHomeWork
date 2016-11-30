@@ -1,6 +1,8 @@
 package com.javarush.test.level30.lesson15.big01.client;
 
 import com.javarush.test.level30.lesson15.big01.ConsoleHelper;
+import com.javarush.test.level30.lesson15.big01.Message;
+import com.javarush.test.level30.lesson15.big01.MessageType;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -11,96 +13,112 @@ import java.util.*;
  */
 
 //18.1.
-public class BotClient extends Client{
-    private static final String WELCOME_TEXT = "Привет чатику. Я бот. Понимаю команды: дата, день, месяц, год, время, час, минуты, секунды.";
+public class BotClient extends Client {
 
-    private static volatile Set<String> botNames = new HashSet<>();
-    //18.2.
+    // Bots counter
+    private static int botsCounter = 0;
+
+
+    /** PSVM **/
+    public static void main(String args []) {
+        new BotClient().run();
+    }
+
+
+    /** inner class */
     public class BotSocketThread extends SocketThread {
 
-        //19.1.
+
         @Override
         protected void clientMainLoop() throws IOException, ClassNotFoundException {
 
-            sendTextMessage(WELCOME_TEXT);
+            //	С помощью метода sendTextMessage() отправь сообщение с текстом
+            sendTextMessage("Привет чатику. Я бот. Понимаю команды: дата, день, месяц, год, время, час, минуты, секунды.");
+
+            // Вызови реализацию clientMainLoop() родительского класса
             super.clientMainLoop();
+
         }
 
-        //19.2.
+
         @Override
         protected void processIncomingMessage(String message) {
-            //19.2.1.
+
+            // Вывести в консоль текст полученного сообщения message
             ConsoleHelper.writeMessage(message);
-            //19.2.2.
-            String[] messageParts = message.split(": ");
-            if (messageParts.length == 2) {
-                String messageAuthor = messageParts[0];
-                String messageText = messageParts[1].toLowerCase();
-                String dateTimeformat = null;
-                switch (messageText) {
-                    case "дата":
-                        dateTimeformat = "d.MM.YYYY";
-                        break;
-                    case "день":
-                        dateTimeformat = "d";
-                        break;
-                    case "месяц":
-                        dateTimeformat = "MMMM";
-                        break;
-                    case "год":
-                        dateTimeformat = "YYYY";
-                        break;
-                    case "время":
-                        dateTimeformat = "H:mm:ss";
-                        break;
-                    case "час":
-                        dateTimeformat = "H";
-                        break;
-                    case "минуты":
-                        dateTimeformat = "m";
-                        break;
-                    case "секунды":
-                        dateTimeformat = "s";
-                        break;
-                }
-                if (dateTimeformat != null) {
-                    String reply = String.format("Информация для %s: %s",
-                            messageAuthor,
-                            new SimpleDateFormat(dateTimeformat).format(Calendar.getInstance().getTime())
-                    );
-                    sendTextMessage(reply);
-                }
+
+            // Получить из message имя отправителя и текст сообщения. Они разделены ": "
+            String senderName = "";
+            String senderMessageText;
+
+            if (message.contains(": ")) {
+                senderName = message.substring(0, message.indexOf(": "));
+                senderMessageText = message.substring(message.indexOf(": ") + 2);
             }
+            else {
+                senderMessageText = message;
+            }
+
+
+            SimpleDateFormat format = null;
+            // Отправить ответ в зависимости от текста принятого сообщения. Если текст сообщения:
+            if ("дата".equalsIgnoreCase(senderMessageText)) {
+                format = new SimpleDateFormat("d.MM.YYYY");
+            }
+            else if ("день".equalsIgnoreCase(senderMessageText)) {
+                format = new SimpleDateFormat("d");
+            }
+            else if ("месяц".equalsIgnoreCase(senderMessageText)) {
+                format = new SimpleDateFormat("MMMM");
+            }
+            else if ("год".equalsIgnoreCase(senderMessageText)) {
+                format = new SimpleDateFormat("YYYY");
+            }
+            else if ("время".equalsIgnoreCase(senderMessageText)) {
+                format = new SimpleDateFormat("H:mm:ss");
+            }
+            else if ("час".equalsIgnoreCase(senderMessageText)) {
+                format = new SimpleDateFormat("H");
+            }
+            else if ("минуты".equalsIgnoreCase(senderMessageText)) {
+                format = new SimpleDateFormat("m");
+            }
+            else if ("секунды".equalsIgnoreCase(senderMessageText)) {
+                format = new SimpleDateFormat("s");
+            }
+
+            if (format != null)
+            {
+                sendTextMessage("Информация для " + senderName + ": " + format.format(Calendar.getInstance().getTime()));
+            }
+
         }
+
     }
 
-    //18.3.
-    //18.3.1.
+    /** methods **/
+
     @Override
     protected SocketThread getSocketThread() {
+        //Он должен создавать и возвращать объект класса BotSocketThread
         return new BotSocketThread();
     }
 
-    //18.3.2.
     @Override
     protected boolean shouldSentTextFromConsole() {
+        //Он должен всегда возвращать false. Мы не хотим, чтобы бот отправлял текст введенный в консоль.
         return false;
     }
 
-    //18.3.3.
     @Override
     protected String getUserName() {
-        String botName;
-        if (botNames.size() >= 100) throw new RuntimeException("Число ботов превысило допустимый предел");
-        do {
-            botName = String.format("date_bot_%02d", new Random().nextInt(100));
-        } while (botNames.contains(botName));
-        botNames.add(botName);
-        return botName;
-    }
+        // метод должен генерировать новое имя бота, например: date_bot_XX, где XX – любое число от 0 до 99.
+        // Этот метод должен возвращать каждый раз новое значение, на случай, если на сервере захотят зарегистрироваться несколько ботов, у них должны быть разные имена.
+        if (botsCounter == 99) {
+            botsCounter = 0;
+        }
 
-    //18.4.
-    public static void main(String[] args) {
-        new BotClient().run();
+        return "date_bot_" + botsCounter++;
+
     }
 }

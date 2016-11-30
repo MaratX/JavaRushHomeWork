@@ -4,148 +4,163 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by FarAway on 10.03.2016.
  */
 public class Server {
-    final private static Map<String, Connection> connectionMap = new java.util.concurrent.ConcurrentHashMap<>();
 
+    // ключ -имя клиента, а значение - соединение с ним
+    private static Map<String, Connection> connectionMap = new ConcurrentHashMap<>();
+
+
+    /** MAIN **/
+    public static void main(String[] args) throws IOException {
+
+        ConsoleHelper.writeMessage("Введите порт сервера: ");
+        int serverPort = ConsoleHelper.readInt();
+
+        try (ServerSocket serverSocket = new ServerSocket(serverPort)) {
+
+            ConsoleHelper.writeMessage("Сервер запущен");
+
+            while (true) {
+                //Слушаем
+                Socket socket = serverSocket.accept();
+                Handler handler = new Handler(socket);
+                //запускаем handler
+                handler.start();
+            }
+        }
+
+    }
+
+
+    /** отправка сообщения для всех **/
+    public static void sendBroadcastMessage(Message message) {
+
+        try {
+
+            for (Connection connection : connectionMap.values()) {
+                connection.send(message);
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+            ConsoleHelper.writeMessage("Сообщение не отправлено");
+        }
+
+    }
+
+
+    /**обработчик Handler, в котором будет происходить обмен сообщениями с клиентом **/
     private static class Handler extends Thread {
 
         private Socket socket;
 
+        //Constructor
         public Handler(Socket socket) {
-            super();
+
             this.socket = socket;
         }
 
+
         @Override
         public void run() {
-            //Task 11.1
-            ConsoleHelper.writeMessage("Установлено соединение с удаленным клиентом с адресом: " +
-                    socket.getRemoteSocketAddress());
 
-            //Task 11.2
-            Connection connection = null;
+            ConsoleHelper.writeMessage("Установленно соединение с адресом " + socket.getRemoteSocketAddress());
             String clientName = null;
-            try {
-                connection = new Connection(socket);
-
-                //Task 11.3
+            //Создаем Connection
+            try (Connection connection = new Connection(socket)) {
+                //Выводить сообщение, что установлено новое соединение с удаленным адресом
+                ConsoleHelper.writeMessage("Подключение к порту: " + connection.getRemoteSocketAddress());
+                //Вызывать метод, реализующий рукопожатие с клиентом, сохраняя имя нового клиента
                 clientName = serverHandshake(connection);
-                //Task 11.4
+                //Рассылать всем участникам чата информацию об имени присоединившегося участника (сообщение с типом USER_ADDED)
                 sendBroadcastMessage(new Message(MessageType.USER_ADDED, clientName));
-
-                //Task 11.5
+                //Сообщать новому участнику о существующих участниках
                 sendListOfUsers(connection, clientName);
-                //Task 11.6
+                //Запускать главный цикл обработки сообщений сервером
                 serverMainLoop(connection, clientName);
 
+
             } catch (IOException e) {
-                handleHandlerException(e, connection);
+                ConsoleHelper.writeMessage("Ошибка при обмене данными с удаленным адресом");
             } catch (ClassNotFoundException e) {
-                handleHandlerException(e, connection);
-            }
-            // disconnecting client
-            if (clientName != null) {
-                connectionMap.remove(clientName);
-                sendBroadcastMessage(new Message(MessageType.USER_REMOVED, clientName));
+                ConsoleHelper.writeMessage("Ошибка при обмене данными с удаленным адресом");
             }
 
-            ConsoleHelper.writeMessage(String.format("Соединение с удаленным адресом (%s) закрыто.", socket.getRemoteSocketAddress()));
+            //После того как все исключения обработаны, удаляем запись из connectionMap
+            connectionMap.remove(clientName);
+            //и отправлялем сообщение остальным пользователям
+            sendBroadcastMessage(new Message(MessageType.USER_REMOVED, clientName));
+
+            ConsoleHelper.writeMessage("Соединение с удаленным адресом закрыто");
+
         }
 
-        private void handleConnectionExcetion(Exception e) {
-            ConsoleHelper.writeMessage("Произошла ошибка при попытке установить соединение с клиентом с адресом: " +
-                    socket.getRemoteSocketAddress() + "%n" +
-                    "Тип ошибки: " + e.getClass().getSimpleName() + "%n" +
-                    "Текст ошибки: " + e.getMessage());
-            try { socket.close(); } catch (IOException e_) { /* NOP */ }
-        }
-
-        private void handleHandShakeExcetion(Exception e, Connection connection) {
-            ConsoleHelper.writeMessage("Произошла ошибка при \"рукопожатии\" с клиентом с адресом: " +
-                    socket.getRemoteSocketAddress() + "%n" +
-                    "Тип ошибки: " + e.getClass().getSimpleName() + "%n" +
-                    "Текст ошибки: " + e.getMessage());
-            try {connection.close(); socket.close(); } catch (IOException e_) { /* NOP */ }
-        }
-
-        private void handleHandlerException(Exception e, Connection connection) {
-            ConsoleHelper.writeMessage("Произошла ошибка при обмене данными с удаленным адресом: " +
-                    socket.getRemoteSocketAddress() + "%n" +
-                    "Тип ошибки: " + e.getClass().getSimpleName() + "%n" +
-                    "Текст ошибки: " + e.getMessage());
-            try {
-                if (connection != null)
-                    connection.close();
-                socket.close();
-            } catch (IOException e_) { /* NOP */ }
-        }
-
+        /** Handshake **/
         private String serverHandshake(Connection connection) throws IOException, ClassNotFoundException {
-            boolean accepted = false;
-            String name = null;
-            while (!accepted) {
+
+            while (true) {
+                // Сформировать и отправить команду запроса имени пользователя
                 connection.send(new Message(MessageType.NAME_REQUEST));
+                // Получить ответ клиента
                 Message message = connection.receive();
+
+                // Проверить, что получена команда с именем пользователя
                 if (message.getType() == MessageType.USER_NAME) {
-                    name = message.getData();
-                    if (!name.isEmpty() && connectionMap.get(name) == null) {
-                        connectionMap.put(name, connection);
-                        connection.send(new Message(MessageType.NAME_ACCEPTED));
-                        accepted = true;
+
+                    //Достать из ответа имя, проверить, что оно не пустое
+                    if (message.getData() != null && !message.getData().isEmpty()) {
+
+                        // и пользователь с таким именем еще не подключен (используй connectionMap)
+                        if (connectionMap.get(message.getData()) == null) {
+
+                            // Добавить нового пользователя и соединение с ним в connectionMap
+                            connectionMap.put(message.getData(), connection);
+                            // Отправить клиенту команду информирующую, что его имя принято
+                            connection.send(new Message(MessageType.NAME_ACCEPTED));
+
+                            // Вернуть принятое имя в качестве возвращаемого значения
+                            return message.getData();
+                        }
                     }
                 }
             }
-            return name;
         }
 
+
+        /** Отправка списка всех пользователей **/
         private void sendListOfUsers(Connection connection, String userName) throws IOException {
-            for (String clientName : connectionMap.keySet()) {
-                if (!clientName.equals(userName))
-                    connection.send(new Message(MessageType.USER_ADDED, clientName));
+
+            for (String key : connectionMap.keySet()) {
+                Message message = new Message(MessageType.USER_ADDED, key);
+
+                if (!key.equals(userName)) {
+                    connection.send(message);
+                }
             }
         }
 
-        private void serverMainLoop(Connection connection, String userName) throws
-                IOException, ClassNotFoundException{
-            while (!Thread.currentThread().isInterrupted()) {
-                Message message = connection.receive();
-                if (message.getType() == MessageType.TEXT) {
-                    String messageText = userName + ": " + message.getData();
-                    sendBroadcastMessage(new Message(MessageType.TEXT, messageText));
-                } else ConsoleHelper.writeMessage(
-                        String.format("Ошибка! Недопустимый тип сообщения (MessageType.%s) от клиента: %s",
-                                message.getType().toString() ,userName)
-                );
-            }
-        }
-    }
 
-    public static void main(String[] args){
+        /** Главный цикл обработки сообщений сервером **/
+        private void serverMainLoop(Connection connection, String userName) throws IOException, ClassNotFoundException {
 
-        ConsoleHelper.writeMessage("Введите порт сервера:");
-        int port = ConsoleHelper.readInt();
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-            ConsoleHelper.writeMessage("Сервер запущен на порту: " + port);
             while (true) {
-                Socket socket = serverSocket.accept();
-                new Handler(socket).start();
-            }
-        } catch (IOException e) {
-            ConsoleHelper.writeMessage(e.getMessage());
-        }
-    }
 
-    public static void sendBroadcastMessage(Message message) {
+                Message message = connection.receive();
+                // Если принятое сообщение – это текст (тип TEXT)
+                if (message.getType() == MessageType.TEXT) {
 
-        for (String clientName : connectionMap.keySet()) {
-            try {
-                connectionMap.get(clientName).send(message);
-            } catch (IOException e) {
-                ConsoleHelper.writeMessage("Не могу отправить сообщение клиенту с именем: " + clientName);
+                    String s = userName + ": " + message.getData();
+
+                    Message formattedMessage = new Message(MessageType.TEXT, s);
+                    sendBroadcastMessage(formattedMessage);
+                } else {
+                    ConsoleHelper.writeMessage("Error");
+                }
             }
         }
     }
