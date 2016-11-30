@@ -5,22 +5,20 @@ import java.awt.*;
 /**
  * Created by HMF on 30.11.2016.
  */
-public abstract class GameObject
-{
+public abstract class GameObject {
+
     private int x;
     private int y;
     private int width;
     private int height;
 
 
-    public abstract void draw(Graphics graphics);
-
+    //constructors
     public GameObject(int x, int y) {
         this.x = x;
         this.y = y;
-        this.height = Model.FIELD_SELL_SIZE;
         this.width = Model.FIELD_SELL_SIZE;
-
+        this.height = Model.FIELD_SELL_SIZE;
     }
 
     public GameObject(int x, int y, int width, int height) {
@@ -30,43 +28,40 @@ public abstract class GameObject
         this.height = height;
     }
 
-    public int getX()
-    {
+    //methods
+    public abstract void draw(Graphics graphics);
+
+
+    //setters and getters
+    public int getX() {
         return x;
     }
 
-    public void setX(int x)
-    {
+    public void setX(int x) {
         this.x = x;
     }
 
-    public int getY()
-    {
+    public int getY() {
         return y;
     }
 
-    public void setY(int y)
-    {
+    public void setY(int y) {
         this.y = y;
     }
 
-    public int getWidth()
-    {
+    public int getWidth() {
         return width;
     }
 
-    public void setWidth(int width)
-    {
+    public void setWidth(int width) {
         this.width = width;
     }
 
-    public int getHeight()
-    {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(int height)
-    {
+    public void setHeight(int height) {
         this.height = height;
     }
 }

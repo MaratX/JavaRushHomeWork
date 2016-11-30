@@ -7,7 +7,6 @@ import java.util.Set;
  * Created by HMF on 30.11.2016.
  */
 public class GameObjects {
-
     private Set<Wall> walls;
     private Set<Box> boxes;
     private Set<Home> homes;

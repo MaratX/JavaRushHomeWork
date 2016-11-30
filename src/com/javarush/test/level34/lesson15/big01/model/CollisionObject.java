@@ -3,13 +3,15 @@ package com.javarush.test.level34.lesson15.big01.model;
 /**
  * Created by HMF on 30.11.2016.
  */
-public abstract class CollisionObject extends GameObject
-{
-    public CollisionObject(int x, int y)
-    {
+public abstract class CollisionObject extends GameObject {
+
+    //constructor
+    public CollisionObject(int x, int y) {
         super(x, y);
     }
-    public boolean isCollision(GameObject gameObject, Direction direction){
+
+    public boolean isCollision(GameObject gameObject, Direction direction) {
+
         boolean result = false;
 
         switch (direction) {

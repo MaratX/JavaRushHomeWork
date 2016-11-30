@@ -1,24 +1,58 @@
 package com.javarush.test.level34.lesson15.big01.controller;
 
+import com.javarush.test.level34.lesson15.big01.model.Direction;
+import com.javarush.test.level34.lesson15.big01.model.GameObjects;
 import com.javarush.test.level34.lesson15.big01.view.View;
 import com.javarush.test.level34.lesson15.big01.model.Model;
 
 /**
  * Created by HMF on 30.11.2016.
  */
-public class Controller
+public class Controller implements EventListener
 {
     private View view;
     private Model model;
 
-    public Controller()
+    public Controller() {
+        model = new Model();
+        model.restart();
+        model.setEventListener(this);
+        view = new View(this);
+        view.init();
+        view.setEventListener(this);
+
+    }
+
+    public static void main(String[] args) {
+        Controller controller = new Controller();
+    }
+
+    public GameObjects getGameObjects()
     {
-        this.view = new View(this);
-        this.model = new Model();
-        this.view.init();
+        return model.getGameObjects();
     }
 
-    public static void main(String... args){
-
+    @Override
+    public void move(Direction direction) {
+        model.move(direction);
+        view.update();
     }
+
+    @Override
+    public void restart() {
+        model.restart();
+        view.update();
+    }
+
+    @Override
+    public void startNextLevel() {
+        model.startNextLevel();
+        view.update();
+    }
+
+    @Override
+    public void levelCompleted(int level) {
+        view.completed(level);
+    }
+
 }
