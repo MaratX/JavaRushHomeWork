@@ -10,11 +10,28 @@ public class UsersView implements View
 {
     private Controller controller;
 
-    @Override
-    public void refresh(ModelData modelData)
-    {
 
+    public void fireEventShowAllUsers(){
+        controller.onShowAllUsers();
+    }
+
+    public void fireEventShowDeletedUsers() {
+        controller.onShowAllDeletedUsers();
+    }
+
+    public void fireEventOpenUserEditForm(long id) {
+        controller.onOpenUserEditForm(id);
+    }
+
+
+    @Override
+    public void refresh(ModelData modelData) {
+        if (!modelData.isDisplayDeletedUserList()) {
             System.out.println("All users:");
+        }
+        if (modelData.isDisplayDeletedUserList()) {
+            System.out.println("All deleted users:");
+        }
 
         //Выведи в консоль всех юзеров, которые есть в modelData
         //Перед каждым юзером сделай отступ в виде табуляции
@@ -25,17 +42,8 @@ public class UsersView implements View
         System.out.println("===================================================");
     }
 
-    public void fireEventShowAllUsers(){
-        controller.onShowAllUsers();
-    }
-
-    public void fireEventShowDeletedUsers() {
-        controller.onShowAllDeletedUsers();
-    }
-
     @Override
-    public void setController(Controller controller)
-    {
+    public void setController(Controller controller) {
         this.controller = controller;
     }
 
