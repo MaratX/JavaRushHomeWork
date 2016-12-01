@@ -2,6 +2,7 @@ package com.javarush.test.level36.lesson06.task02;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /* Поиск класса по описанию
 Замените следующие слова на нужные:
@@ -15,23 +16,18 @@ import java.util.List;
 */
 public class Solution {
     public static void main(String... args) {    //it's correct line
-        ClassNameToBeReplaced<String> list = new ClassNameToBeReplaced();
+        CopyOnWriteArrayList<String> list = new CopyOnWriteArrayList();
         list.add("A");
         list.add("B");
         list.add("C");
         list.remove("B");
         List<String> collection = Arrays.asList(new String[]{"B", "C", "D", "B"});
 
-        list.methodNameToBeReplaced(collection);
+        list.addAllAbsent(collection);
 
         for (String string : list) {
             System.out.println(string);
         }
-        /* Expected output
-A
-C
-B
-D
-         */
+
     }
 }
