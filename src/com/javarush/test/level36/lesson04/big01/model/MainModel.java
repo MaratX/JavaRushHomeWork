@@ -31,6 +31,13 @@ public class MainModel implements Model
         modelData.setUsers(getActiveUsers(userService.getUsersBetweenLevels(1, 100)));
     }
 
+    @Override
+    public void loadDeletedUsers()
+    {
+        modelData.setDisplayDeletedUserList(true);
+        List<User> users = userService.getAllDeletedUsers();
+        modelData.setUsers(users);
+    }
 
     private List<User> getActiveUsers(List<User> userList){
         return userService.filterOnlyActiveUsers(userList);
