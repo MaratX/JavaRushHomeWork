@@ -18,8 +18,9 @@ public class LevelLoader
     }
     public GameObjects getLevel(int level)
     {
-        int tmpLevel = level%60;
-        if (tmpLevel == 0) tmpLevel += 1;
+        int tmpLevel = level;
+        if (tmpLevel > 60)
+            tmpLevel -= 60;
         HashSet<Wall> walls = new HashSet<>();
         HashSet<Box> boxes = new HashSet<>();
         HashSet<Home> homes = new HashSet<>();
@@ -46,6 +47,8 @@ public class LevelLoader
                         case '@':
                             player = new Player(x0 + j * cellSize, y0 + i * cellSize);
                             break;
+                        case '&':
+                            boxes.add(new Box(x0 + j * cellSize, y0 + i * cellSize));
                         case '*':
                             boxes.add(new Box(x0 + j * cellSize, y0 + i * cellSize));
                             break;
