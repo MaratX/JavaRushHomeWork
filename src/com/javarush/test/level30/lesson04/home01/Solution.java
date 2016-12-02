@@ -5,8 +5,8 @@ import java.util.concurrent.TransferQueue;
 
 /* Экономим время
 1. Создайте Producer и Consumer (См. комментарий к методу main)
-2. Создайте методы toString, equals и hashCode в классе ShareItem. Для этого в теле класса ShareItem выполни:
-2.1. Alt+Enter -> toString() -> Enter
+//2. Создайте методы toString, equals и hashCode в классе ShareItem. Для этого в теле класса ShareItem выполни:
+2.1. Alt+Enter -> toString()  mk-> Enter
 2.2. Alt+Enter -> equals() and hashCode() -> click all 'Next'-s
 3. В Producer и Consumer реализуйте метод run так, чтобы вызов метода interrupt прерывал работу consumer и producer трэдов
 

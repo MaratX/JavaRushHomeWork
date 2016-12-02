@@ -2,13 +2,12 @@ package com.javarush.test.level30.lesson04.home01;
 
 import java.util.concurrent.TransferQueue;
 
-/**
- * Created by HMF on 22.11.2016.
- */
+
 public class Producer implements Runnable {
     private TransferQueue<ShareItem> queue;
 
     public Producer(TransferQueue<ShareItem> queue) {
+
         this.queue = queue;
     }
 
@@ -19,11 +18,13 @@ public class Producer implements Runnable {
                 return;
             }
             System.out.format("Ёлемент 'ShareItem-%d' добавлен%n", i);
-            queue.offer(new ShareItem("ShareItem-"+i, i));
+            queue.offer(new ShareItem("ShareItem-" + i, i));
             try {
                 Thread.sleep(100);
             }
-            catch (InterruptedException e) {}
+            catch (InterruptedException e) {
+
+            }
 
             if (queue.hasWaitingConsumer()) {
                 System.out.println("Consumer в ожидании!");

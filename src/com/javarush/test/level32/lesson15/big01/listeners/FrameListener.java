@@ -8,8 +8,7 @@ import java.awt.event.WindowEvent;
 /**
  * Created by HMF on 25.11.2016.
  */
-public class FrameListener extends WindowAdapter
-{
+public class FrameListener extends WindowAdapter {
 
     private View view;
 
