@@ -7,9 +7,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketAddress;
 
-/**
- * Created by FarAway on 10.03.2016.
- */
 public class Connection implements Closeable {
 
     private final Socket socket;

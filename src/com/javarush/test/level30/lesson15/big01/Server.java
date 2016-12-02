@@ -6,30 +6,27 @@ import java.net.Socket;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by FarAway on 10.03.2016.
- */
 public class Server {
 
-    // ключ -имя клиента, а значение - соединение с ним
+    // РєР»СЋС‡ -РёРјСЏ РєР»РёРµРЅС‚Р°, Р° Р·РЅР°С‡РµРЅРёРµ - СЃРѕРµРґРёРЅРµРЅРёРµ СЃ РЅРёРј
     private static Map<String, Connection> connectionMap = new ConcurrentHashMap<>();
 
 
     /** MAIN **/
     public static void main(String[] args) throws IOException {
 
-        ConsoleHelper.writeMessage("Введите порт сервера: ");
+        ConsoleHelper.writeMessage("Р’РІРµРґРёС‚Рµ РїРѕСЂС‚ СЃРµСЂРІРµСЂР°: ");
         int serverPort = ConsoleHelper.readInt();
 
         try (ServerSocket serverSocket = new ServerSocket(serverPort)) {
 
-            ConsoleHelper.writeMessage("Сервер запущен");
+            ConsoleHelper.writeMessage("РЎРµСЂРІРµСЂ Р·Р°РїСѓС‰РµРЅ");
 
             while (true) {
-                //Слушаем
+                //РЎР»СѓС€Р°РµРј
                 Socket socket = serverSocket.accept();
                 Handler handler = new Handler(socket);
-                //запускаем handler
+                //Р·Р°РїСѓСЃРєР°РµРј handler
                 handler.start();
             }
         }
@@ -37,7 +34,7 @@ public class Server {
     }
 
 
-    /** отправка сообщения для всех **/
+    /** РѕС‚РїСЂР°РІРєР° СЃРѕРѕР±С‰РµРЅРёСЏ РґР»СЏ РІСЃРµС… **/
     public static void sendBroadcastMessage(Message message) {
 
         try {
@@ -48,13 +45,13 @@ public class Server {
 
         } catch (Exception e){
             e.printStackTrace();
-            ConsoleHelper.writeMessage("Сообщение не отправлено");
+            ConsoleHelper.writeMessage("РЎРѕРѕР±С‰РµРЅРёРµ РЅРµ РѕС‚РїСЂР°РІР»РµРЅРѕ");
         }
 
     }
 
 
-    /**обработчик Handler, в котором будет происходить обмен сообщениями с клиентом **/
+    /**РѕР±СЂР°Р±РѕС‚С‡РёРє Handler, РІ РєРѕС‚РѕСЂРѕРј Р±СѓРґРµС‚ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РѕР±РјРµРЅ СЃРѕРѕР±С‰РµРЅРёСЏРјРё СЃ РєР»РёРµРЅС‚РѕРј **/
     private static class Handler extends Thread {
 
         private Socket socket;
@@ -69,34 +66,34 @@ public class Server {
         @Override
         public void run() {
 
-            ConsoleHelper.writeMessage("Установленно соединение с адресом " + socket.getRemoteSocketAddress());
+            ConsoleHelper.writeMessage("РЈСЃС‚Р°РЅРѕРІР»РµРЅРЅРѕ СЃРѕРµРґРёРЅРµРЅРёРµ СЃ Р°РґСЂРµСЃРѕРј " + socket.getRemoteSocketAddress());
             String clientName = null;
-            //Создаем Connection
+            //РЎРѕР·РґР°РµРј Connection
             try (Connection connection = new Connection(socket)) {
-                //Выводить сообщение, что установлено новое соединение с удаленным адресом
-                ConsoleHelper.writeMessage("Подключение к порту: " + connection.getRemoteSocketAddress());
-                //Вызывать метод, реализующий рукопожатие с клиентом, сохраняя имя нового клиента
+                //Р’С‹РІРѕРґРёС‚СЊ СЃРѕРѕР±С‰РµРЅРёРµ, С‡С‚Рѕ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ РЅРѕРІРѕРµ СЃРѕРµРґРёРЅРµРЅРёРµ СЃ СѓРґР°Р»РµРЅРЅС‹Рј Р°РґСЂРµСЃРѕРј
+                ConsoleHelper.writeMessage("РџРѕРґРєР»СЋС‡РµРЅРёРµ Рє РїРѕСЂС‚Сѓ: " + connection.getRemoteSocketAddress());
+                //Р’С‹Р·С‹РІР°С‚СЊ РјРµС‚РѕРґ, СЂРµР°Р»РёР·СѓСЋС‰РёР№ СЂСѓРєРѕРїРѕР¶Р°С‚РёРµ СЃ РєР»РёРµРЅС‚РѕРј, СЃРѕС…СЂР°РЅСЏСЏ РёРјСЏ РЅРѕРІРѕРіРѕ РєР»РёРµРЅС‚Р°
                 clientName = serverHandshake(connection);
-                //Рассылать всем участникам чата информацию об имени присоединившегося участника (сообщение с типом USER_ADDED)
+                //Р Р°СЃСЃС‹Р»Р°С‚СЊ РІСЃРµРј СѓС‡Р°СЃС‚РЅРёРєР°Рј С‡Р°С‚Р° РёРЅС„РѕСЂРјР°С†РёСЋ РѕР± РёРјРµРЅРё РїСЂРёСЃРѕРµРґРёРЅРёРІС€РµРіРѕСЃСЏ СѓС‡Р°СЃС‚РЅРёРєР° (СЃРѕРѕР±С‰РµРЅРёРµ СЃ С‚РёРїРѕРј USER_ADDED)
                 sendBroadcastMessage(new Message(MessageType.USER_ADDED, clientName));
-                //Сообщать новому участнику о существующих участниках
+                //РЎРѕРѕР±С‰Р°С‚СЊ РЅРѕРІРѕРјСѓ СѓС‡Р°СЃС‚РЅРёРєСѓ Рѕ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёС… СѓС‡Р°СЃС‚РЅРёРєР°С…
                 sendListOfUsers(connection, clientName);
-                //Запускать главный цикл обработки сообщений сервером
+                //Р—Р°РїСѓСЃРєР°С‚СЊ РіР»Р°РІРЅС‹Р№ С†РёРєР» РѕР±СЂР°Р±РѕС‚РєРё СЃРѕРѕР±С‰РµРЅРёР№ СЃРµСЂРІРµСЂРѕРј
                 serverMainLoop(connection, clientName);
 
 
             } catch (IOException e) {
-                ConsoleHelper.writeMessage("Ошибка при обмене данными с удаленным адресом");
+                ConsoleHelper.writeMessage("РћС€РёР±РєР° РїСЂРё РѕР±РјРµРЅРµ РґР°РЅРЅС‹РјРё СЃ СѓРґР°Р»РµРЅРЅС‹Рј Р°РґСЂРµСЃРѕРј");
             } catch (ClassNotFoundException e) {
-                ConsoleHelper.writeMessage("Ошибка при обмене данными с удаленным адресом");
+                ConsoleHelper.writeMessage("РћС€РёР±РєР° РїСЂРё РѕР±РјРµРЅРµ РґР°РЅРЅС‹РјРё СЃ СѓРґР°Р»РµРЅРЅС‹Рј Р°РґСЂРµСЃРѕРј");
             }
 
-            //После того как все исключения обработаны, удаляем запись из connectionMap
+            //РџРѕСЃР»Рµ С‚РѕРіРѕ РєР°Рє РІСЃРµ РёСЃРєР»СЋС‡РµРЅРёСЏ РѕР±СЂР°Р±РѕС‚Р°РЅС‹, СѓРґР°Р»СЏРµРј Р·Р°РїРёСЃСЊ РёР· connectionMap
             connectionMap.remove(clientName);
-            //и отправлялем сообщение остальным пользователям
+            //Рё РѕС‚РїСЂР°РІР»СЏР»РµРј СЃРѕРѕР±С‰РµРЅРёРµ РѕСЃС‚Р°Р»СЊРЅС‹Рј РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРј
             sendBroadcastMessage(new Message(MessageType.USER_REMOVED, clientName));
 
-            ConsoleHelper.writeMessage("Соединение с удаленным адресом закрыто");
+            ConsoleHelper.writeMessage("РЎРѕРµРґРёРЅРµРЅРёРµ СЃ СѓРґР°Р»РµРЅРЅС‹Рј Р°РґСЂРµСЃРѕРј Р·Р°РєСЂС‹С‚Рѕ");
 
         }
 
@@ -104,26 +101,26 @@ public class Server {
         private String serverHandshake(Connection connection) throws IOException, ClassNotFoundException {
 
             while (true) {
-                // Сформировать и отправить команду запроса имени пользователя
+                // РЎС„РѕСЂРјРёСЂРѕРІР°С‚СЊ Рё РѕС‚РїСЂР°РІРёС‚СЊ РєРѕРјР°РЅРґСѓ Р·Р°РїСЂРѕСЃР° РёРјРµРЅРё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
                 connection.send(new Message(MessageType.NAME_REQUEST));
-                // Получить ответ клиента
+                // РџРѕР»СѓС‡РёС‚СЊ РѕС‚РІРµС‚ РєР»РёРµРЅС‚Р°
                 Message message = connection.receive();
 
-                // Проверить, что получена команда с именем пользователя
+                // РџСЂРѕРІРµСЂРёС‚СЊ, С‡С‚Рѕ РїРѕР»СѓС‡РµРЅР° РєРѕРјР°РЅРґР° СЃ РёРјРµРЅРµРј РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
                 if (message.getType() == MessageType.USER_NAME) {
 
-                    //Достать из ответа имя, проверить, что оно не пустое
+                    //Р”РѕСЃС‚Р°С‚СЊ РёР· РѕС‚РІРµС‚Р° РёРјСЏ, РїСЂРѕРІРµСЂРёС‚СЊ, С‡С‚Рѕ РѕРЅРѕ РЅРµ РїСѓСЃС‚РѕРµ
                     if (message.getData() != null && !message.getData().isEmpty()) {
 
-                        // и пользователь с таким именем еще не подключен (используй connectionMap)
+                        // Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ С‚Р°РєРёРј РёРјРµРЅРµРј РµС‰Рµ РЅРµ РїРѕРґРєР»СЋС‡РµРЅ (РёСЃРїРѕР»СЊР·СѓР№ connectionMap)
                         if (connectionMap.get(message.getData()) == null) {
 
-                            // Добавить нового пользователя и соединение с ним в connectionMap
+                            // Р”РѕР±Р°РІРёС‚СЊ РЅРѕРІРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ Рё СЃРѕРµРґРёРЅРµРЅРёРµ СЃ РЅРёРј РІ connectionMap
                             connectionMap.put(message.getData(), connection);
-                            // Отправить клиенту команду информирующую, что его имя принято
+                            // РћС‚РїСЂР°РІРёС‚СЊ РєР»РёРµРЅС‚Сѓ РєРѕРјР°РЅРґСѓ РёРЅС„РѕСЂРјРёСЂСѓСЋС‰СѓСЋ, С‡С‚Рѕ РµРіРѕ РёРјСЏ РїСЂРёРЅСЏС‚Рѕ
                             connection.send(new Message(MessageType.NAME_ACCEPTED));
 
-                            // Вернуть принятое имя в качестве возвращаемого значения
+                            // Р’РµСЂРЅСѓС‚СЊ РїСЂРёРЅСЏС‚РѕРµ РёРјСЏ РІ РєР°С‡РµСЃС‚РІРµ РІРѕР·РІСЂР°С‰Р°РµРјРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ
                             return message.getData();
                         }
                     }
@@ -132,7 +129,7 @@ public class Server {
         }
 
 
-        /** Отправка списка всех пользователей **/
+        /** РћС‚РїСЂР°РІРєР° СЃРїРёСЃРєР° РІСЃРµС… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ **/
         private void sendListOfUsers(Connection connection, String userName) throws IOException {
 
             for (String key : connectionMap.keySet()) {
@@ -145,13 +142,13 @@ public class Server {
         }
 
 
-        /** Главный цикл обработки сообщений сервером **/
+        /** Р“Р»Р°РІРЅС‹Р№ С†РёРєР» РѕР±СЂР°Р±РѕС‚РєРё СЃРѕРѕР±С‰РµРЅРёР№ СЃРµСЂРІРµСЂРѕРј **/
         private void serverMainLoop(Connection connection, String userName) throws IOException, ClassNotFoundException {
 
             while (true) {
 
                 Message message = connection.receive();
-                // Если принятое сообщение – это текст (тип TEXT)
+                // Р•СЃР»Рё РїСЂРёРЅСЏС‚РѕРµ СЃРѕРѕР±С‰РµРЅРёРµ вЂ“ СЌС‚Рѕ С‚РµРєСЃС‚ (С‚РёРї TEXT)
                 if (message.getType() == MessageType.TEXT) {
 
                     String s = userName + ": " + message.getData();

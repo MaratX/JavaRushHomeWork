@@ -1,18 +1,10 @@
 package com.javarush.test.level30.lesson15.big01.client;
-
 import com.javarush.test.level30.lesson15.big01.ConsoleHelper;
-import com.javarush.test.level30.lesson15.big01.Message;
-import com.javarush.test.level30.lesson15.big01.MessageType;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
 
-/**
- * Created by FarAway on 12.03.2016.
- */
-
-//18.1.
 public class BotClient extends Client {
 
     // Bots counter
@@ -32,10 +24,10 @@ public class BotClient extends Client {
         @Override
         protected void clientMainLoop() throws IOException, ClassNotFoundException {
 
-            //	С помощью метода sendTextMessage() отправь сообщение с текстом
-            sendTextMessage("Привет чатику. Я бот. Понимаю команды: дата, день, месяц, год, время, час, минуты, секунды.");
+            //	РЎ РїРѕРјРѕС‰СЊСЋ РјРµС‚РѕРґР° sendTextMessage() РѕС‚РїСЂР°РІСЊ СЃРѕРѕР±С‰РµРЅРёРµ СЃ С‚РµРєСЃС‚РѕРј
+            sendTextMessage("РџСЂРёРІРµС‚ С‡Р°С‚РёРєСѓ. РЇ Р±РѕС‚. РџРѕРЅРёРјР°СЋ РєРѕРјР°РЅРґС‹: РґР°С‚Р°, РґРµРЅСЊ, РјРµСЃСЏС†, РіРѕРґ, РІСЂРµРјСЏ, С‡Р°СЃ, РјРёРЅСѓС‚С‹, СЃРµРєСѓРЅРґС‹.");
 
-            // Вызови реализацию clientMainLoop() родительского класса
+            // Р’С‹Р·РѕРІРё СЂРµР°Р»РёР·Р°С†РёСЋ clientMainLoop() СЂРѕРґРёС‚РµР»СЊСЃРєРѕРіРѕ РєР»Р°СЃСЃР°
             super.clientMainLoop();
 
         }
@@ -44,10 +36,10 @@ public class BotClient extends Client {
         @Override
         protected void processIncomingMessage(String message) {
 
-            // Вывести в консоль текст полученного сообщения message
+            // Р’С‹РІРµСЃС‚Рё РІ РєРѕРЅСЃРѕР»СЊ С‚РµРєСЃС‚ РїРѕР»СѓС‡РµРЅРЅРѕРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ message
             ConsoleHelper.writeMessage(message);
 
-            // Получить из message имя отправителя и текст сообщения. Они разделены ": "
+            // РџРѕР»СѓС‡РёС‚СЊ РёР· message РёРјСЏ РѕС‚РїСЂР°РІРёС‚РµР»СЏ Рё С‚РµРєСЃС‚ СЃРѕРѕР±С‰РµРЅРёСЏ. РћРЅРё СЂР°Р·РґРµР»РµРЅС‹ ": "
             String senderName = "";
             String senderMessageText;
 
@@ -61,35 +53,35 @@ public class BotClient extends Client {
 
 
             SimpleDateFormat format = null;
-            // Отправить ответ в зависимости от текста принятого сообщения. Если текст сообщения:
-            if ("дата".equalsIgnoreCase(senderMessageText)) {
+            // РћС‚РїСЂР°РІРёС‚СЊ РѕС‚РІРµС‚ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‚РµРєСЃС‚Р° РїСЂРёРЅСЏС‚РѕРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ. Р•СЃР»Рё С‚РµРєСЃС‚ СЃРѕРѕР±С‰РµРЅРёСЏ:
+            if ("РґР°С‚Р°".equalsIgnoreCase(senderMessageText)) {
                 format = new SimpleDateFormat("d.MM.YYYY");
             }
-            else if ("день".equalsIgnoreCase(senderMessageText)) {
+            else if ("РґРµРЅСЊ".equalsIgnoreCase(senderMessageText)) {
                 format = new SimpleDateFormat("d");
             }
-            else if ("месяц".equalsIgnoreCase(senderMessageText)) {
+            else if ("РјРµСЃСЏС†".equalsIgnoreCase(senderMessageText)) {
                 format = new SimpleDateFormat("MMMM");
             }
-            else if ("год".equalsIgnoreCase(senderMessageText)) {
+            else if ("РіРѕРґ".equalsIgnoreCase(senderMessageText)) {
                 format = new SimpleDateFormat("YYYY");
             }
-            else if ("время".equalsIgnoreCase(senderMessageText)) {
+            else if ("РІСЂРµРјСЏ".equalsIgnoreCase(senderMessageText)) {
                 format = new SimpleDateFormat("H:mm:ss");
             }
-            else if ("час".equalsIgnoreCase(senderMessageText)) {
+            else if ("С‡Р°СЃ".equalsIgnoreCase(senderMessageText)) {
                 format = new SimpleDateFormat("H");
             }
-            else if ("минуты".equalsIgnoreCase(senderMessageText)) {
+            else if ("РјРёРЅСѓС‚С‹".equalsIgnoreCase(senderMessageText)) {
                 format = new SimpleDateFormat("m");
             }
-            else if ("секунды".equalsIgnoreCase(senderMessageText)) {
+            else if ("СЃРµРєСѓРЅРґС‹".equalsIgnoreCase(senderMessageText)) {
                 format = new SimpleDateFormat("s");
             }
 
             if (format != null)
             {
-                sendTextMessage("Информация для " + senderName + ": " + format.format(Calendar.getInstance().getTime()));
+                sendTextMessage("РРЅС„РѕСЂРјР°С†РёСЏ РґР»СЏ " + senderName + ": " + format.format(Calendar.getInstance().getTime()));
             }
 
         }
@@ -100,20 +92,20 @@ public class BotClient extends Client {
 
     @Override
     protected SocketThread getSocketThread() {
-        //Он должен создавать и возвращать объект класса BotSocketThread
+        //РћРЅ РґРѕР»Р¶РµРЅ СЃРѕР·РґР°РІР°С‚СЊ Рё РІРѕР·РІСЂР°С‰Р°С‚СЊ РѕР±СЉРµРєС‚ РєР»Р°СЃСЃР° BotSocketThread
         return new BotSocketThread();
     }
 
     @Override
     protected boolean shouldSentTextFromConsole() {
-        //Он должен всегда возвращать false. Мы не хотим, чтобы бот отправлял текст введенный в консоль.
+        //РћРЅ РґРѕР»Р¶РµРЅ РІСЃРµРіРґР° РІРѕР·РІСЂР°С‰Р°С‚СЊ false. РњС‹ РЅРµ С…РѕС‚РёРј, С‡С‚РѕР±С‹ Р±РѕС‚ РѕС‚РїСЂР°РІР»СЏР» С‚РµРєСЃС‚ РІРІРµРґРµРЅРЅС‹Р№ РІ РєРѕРЅСЃРѕР»СЊ.
         return false;
     }
 
     @Override
     protected String getUserName() {
-        // метод должен генерировать новое имя бота, например: date_bot_XX, где XX – любое число от 0 до 99.
-        // Этот метод должен возвращать каждый раз новое значение, на случай, если на сервере захотят зарегистрироваться несколько ботов, у них должны быть разные имена.
+        // РјРµС‚РѕРґ РґРѕР»Р¶РµРЅ РіРµРЅРµСЂРёСЂРѕРІР°С‚СЊ РЅРѕРІРѕРµ РёРјСЏ Р±РѕС‚Р°, РЅР°РїСЂРёРјРµСЂ: date_bot_XX, РіРґРµ XX вЂ“ Р»СЋР±РѕРµ С‡РёСЃР»Рѕ РѕС‚ 0 РґРѕ 99.
+        // Р­С‚РѕС‚ РјРµС‚РѕРґ РґРѕР»Р¶РµРЅ РІРѕР·РІСЂР°С‰Р°С‚СЊ РєР°Р¶РґС‹Р№ СЂР°Р· РЅРѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ, РЅР° СЃР»СѓС‡Р°Р№, РµСЃР»Рё РЅР° СЃРµСЂРІРµСЂРµ Р·Р°С…РѕС‚СЏС‚ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊСЃСЏ РЅРµСЃРєРѕР»СЊРєРѕ Р±РѕС‚РѕРІ, Сѓ РЅРёС… РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ СЂР°Р·РЅС‹Рµ РёРјРµРЅР°.
         if (botsCounter == 99) {
             botsCounter = 0;
         }

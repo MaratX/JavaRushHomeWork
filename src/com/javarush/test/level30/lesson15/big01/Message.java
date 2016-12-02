@@ -1,10 +1,8 @@
 package com.javarush.test.level30.lesson15.big01;
 
+
 import java.io.Serializable;
 
-/**
- * Created by FarAway on 10.03.2016.
- */
 public class Message implements Serializable {
 
     private final MessageType type;
