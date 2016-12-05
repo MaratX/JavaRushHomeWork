@@ -20,6 +20,6 @@ package com.javarush.test.level38.lesson06.home01;
 
 public class Solution {
     public static Class getFactoryClass() {
-        return null;
+        return ExceptionFactory.class;
     }
 }
