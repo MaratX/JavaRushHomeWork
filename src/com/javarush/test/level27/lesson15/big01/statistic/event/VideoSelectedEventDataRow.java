@@ -6,41 +6,37 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by HMF on 29.11.2016.
+ * Created by FarAway on 28.02.2016.
  */
-public class VideoSelectedEventDataRow implements EventDataRow {
+public class VideoSelectedEventDataRow  implements EventDataRow {
     private List<Advertisement> optimalVideoSet;
     private long amount;
     private int totalDuration;
     private Date currentDate;
 
-    public VideoSelectedEventDataRow(List<Advertisement> optimalVideoSet, long amount, int totalDuration) {
-        this.optimalVideoSet = optimalVideoSet;
-        this.amount = amount;
-        this.totalDuration = totalDuration;
-        this.currentDate = (new Date());
-    }
-
-    public long getAmount()
-    {
-        return amount;
-    }
-
     @Override
-    public EventType getType()
-    {
-        return EventType.SELECTED_VIDEOS;
-    }
-
-    @Override
-    public Date getDate()
-    {
+    public Date getDate() {
         return currentDate;
     }
 
     @Override
-    public int getTime()
-    {
+    public int getTime() {
         return totalDuration;
+    }
+
+    public long getAmount() {
+        return amount;
+    }
+
+    public VideoSelectedEventDataRow(List<Advertisement> optimalVideoSet, long amount, int totalDuration) {
+        this.optimalVideoSet = optimalVideoSet;
+        this.amount = amount;
+        this.totalDuration = totalDuration;
+        this.currentDate = new Date();
+    }
+
+    @Override
+    public EventType getType() {
+        return EventType.SELECTED_VIDEOS;
     }
 }

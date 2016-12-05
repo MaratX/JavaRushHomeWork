@@ -7,53 +7,45 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Created by HMF on 08.11.2016.
+ * Created by FarAway on 27.02.2016.
  */
 public class Order {
-
     private Tablet tablet;
-    private List<Dish> dishes;
+    protected List<Dish> dishes;
+    private int cookingTime;
 
-
-    public Order(Tablet tablet) throws IOException {
-        this.tablet = tablet;
-        this.dishes = ConsoleHelper.getAllDishesForOrder();
-
+    protected void initDishes() throws IOException {
+        ConsoleHelper.writeMessage(Dish.allDishesToString());
+        dishes = ConsoleHelper.getAllDishesForOrder();
     }
 
+    public Order(Tablet tablet) throws IOException{
+        this.tablet = tablet;
+        initDishes();
+    }
+
+    public Tablet getTablet() {
+        return tablet;
+    }
+
+    public int getTotalCookingTime() {
+        cookingTime = 0;
+        for (Dish dish : dishes) {
+            cookingTime += dish.getDuration();
+        }
+        return cookingTime;
+    }
 
     @Override
     public String toString() {
-        if (dishes.isEmpty()) {
-            return "";
-        }
-        else {
-            return "Your order: " + dishes.toString() +" of "+  tablet.toString();
-        }
-
+        return dishes.isEmpty() ? "" : "Your order: " + dishes + " of Tablet{" + "number=" + tablet.getNumber() + '}';
     }
 
     public boolean isEmpty() {
         return dishes.isEmpty();
     }
 
-    public int getTotalCookingTime() {
-
-        int totalTime = 0;
-
-        for (int i = 0; i < dishes.size(); i++) {
-            totalTime = dishes.get(i).getDuration() + totalTime;
-        }
-
-        return totalTime;
-
-    }
-
     public List<Dish> getDishes() {
         return dishes;
-    }
-
-    public Tablet getTablet() {
-        return tablet;
     }
 }

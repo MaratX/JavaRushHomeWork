@@ -1,5 +1,6 @@
 package com.javarush.test.level30.lesson04.home01;
 
+
 import java.util.concurrent.TransferQueue;
 
 
@@ -17,8 +18,8 @@ public class Producer implements Runnable {
             if (Thread.currentThread().isInterrupted()) {
                 return;
             }
-            System.out.format("Элемент 'ShareItem-%d' добавлен%n", i);
-            queue.offer(new ShareItem("ShareItem-" + i, i));
+            System.out.format("Р­Р»РµРјРµРЅС‚ 'ShareItem-%d' РґРѕР±Р°РІР»РµРЅ%n", i);
+            queue.offer(new ShareItem("ShareItem-"+i, i));
             try {
                 Thread.sleep(100);
             }
@@ -27,7 +28,7 @@ public class Producer implements Runnable {
             }
 
             if (queue.hasWaitingConsumer()) {
-                System.out.println("Consumer в ожидании!");
+                System.out.println("Consumer РІ РѕР¶РёРґР°РЅРёРё!");
             }
         }
     }

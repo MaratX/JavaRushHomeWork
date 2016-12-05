@@ -3,12 +3,21 @@ package com.javarush.test.level27.lesson15.big01.statistic.event;
 import java.util.Date;
 
 /**
- * Created by HMF on 29.11.2016.
+ * Created by FarAway on 28.02.2016.
  */
-public class NoAvailableVideoEventDataRow implements EventDataRow
-{
-    private int totalDuration;
+public class NoAvailableVideoEventDataRow  implements EventDataRow {
     private Date currentDate;
+    private int totalDuration;
+
+    @Override
+    public Date getDate() {
+        return currentDate;
+    }
+
+    @Override
+    public int getTime() {
+        return totalDuration;
+    }
 
     public NoAvailableVideoEventDataRow(int totalDuration) {
         this.totalDuration = totalDuration;
@@ -16,20 +25,7 @@ public class NoAvailableVideoEventDataRow implements EventDataRow
     }
 
     @Override
-    public EventType getType()
-    {
+    public EventType getType() {
         return EventType.NO_AVAILABLE_VIDEO;
-    }
-
-    @Override
-    public Date getDate()
-    {
-        return currentDate;
-    }
-
-    @Override
-    public int getTime()
-    {
-        return totalDuration;
     }
 }

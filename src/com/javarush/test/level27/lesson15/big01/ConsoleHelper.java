@@ -9,54 +9,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by HMF on 09.11.2016.
+ * Created by HMF on 05.12.2016.
  */
 public class ConsoleHelper {
-
-
-    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
+    private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public static void writeMessage(String message) {
         System.out.println(message);
     }
 
-
-    public static String readString() throws IOException {
-
-        String message;
-        message = reader.readLine();
-
-        return message;
+    public static String readString() throws IOException{
+        return reader.readLine();
     }
 
-    public static List<Dish> getAllDishesForOrder() throws IOException {
-
-        List<Dish> listDish = new ArrayList<>();
-
-        String str = "";
-        writeMessage("Выберите блюдо:\n" + Dish.allDishesToString());
-
-
-        while (true) {
-
-            str = readString();
-            if (str.equalsIgnoreCase("exit")) {
-                break;
-            }
-
-            else {
-                try {
-                    listDish.add(Dish.valueOf(str));
-                }
-
-                catch (IllegalArgumentException e) {
-                    writeMessage(str + " is not detected");
-                }
+    public static List<Dish> getAllDishesForOrder() throws IOException{
+        String s;
+        List<Dish> dishes = new ArrayList<>();
+        while (!(s = readString()).equalsIgnoreCase("exit")) {
+            try {
+                dishes.add(Dish.valueOf(s));
+            } catch (IllegalArgumentException e) {
+                ConsoleHelper.writeMessage(s + " is not detected");
             }
         }
-
-        return listDish;
+        return dishes;
     }
-
 }

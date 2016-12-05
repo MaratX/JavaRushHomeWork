@@ -1,43 +1,75 @@
 package com.javarush.test.level27.lesson15.big01;
-
-import com.javarush.test.level27.lesson15.big01.statistic.StatisticManager;
-
+import com.javarush.test.level27.lesson15.big01.ad.Advertisement;
+import com.javarush.test.level27.lesson15.big01.ad.StatisticAdvertisementManager;
+import com.javarush.test.level27.lesson15.big01.statistic.StatisticEventManager;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
- * Created by HMF on 29.11.2016.
+ * Created by FarAway on 28.02.2016.
  */
 public class DirectorTablet {
-
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
-
-    public void printAdvertisementProfit() {
-
-        double total = 0;
-        for (Map.Entry<Date, Double> entry : StatisticManager.getInstance().getTotalMoneyPerDay().entrySet()) {
-
-            double e = entry.getValue();
-            ConsoleHelper.writeMessage(String.format("%s - %.2f", simpleDateFormat.format(entry.getKey()), e));
-            total += e;
+    public void printAdvertisementProfit(){
+        TreeMap<Date, Long> advertisementRevenueAgregatedByDay = StatisticEventManager.getInstance().getAdvertisementRevenueAgregatedByDay();
+        if (advertisementRevenueAgregatedByDay.isEmpty()) return;
+        NavigableSet<Date> datesRow = advertisementRevenueAgregatedByDay.descendingKeySet();
+        Long totalAmmout = Long.valueOf(0);
+        for (Date date : datesRow) {
+            Long dayAmount = advertisementRevenueAgregatedByDay.get(date);
+            totalAmmout += dayAmount;
+            ConsoleHelper.writeMessage(String.format(Locale.ENGLISH, "%s - %.2f",
+                            new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH).format(date),
+                            0.01d * dayAmount)
+            );
         }
-        if (total > 0) ConsoleHelper.writeMessage(String.format("Total - %.2f",total));
+        ConsoleHelper.writeMessage(String.format(Locale.ENGLISH, "Total - %.2f", 0.01d * totalAmmout));
     }
     public void printCookWorkloading() {
-
-        for (Map.Entry<Date, TreeMap<String, Integer>> pair : StatisticManager.getInstance().getCookInfo().entrySet()) {
-            ConsoleHelper.writeMessage(simpleDateFormat.format(pair.getKey()));
-            for (Map.Entry<String, Integer> pair2 : pair.getValue().entrySet()) {
-                if (pair2.getValue() > 0) {
-                    ConsoleHelper.writeMessage(String.format("%s - %d min", pair2.getKey(), pair2.getValue()));
+        TreeMap<Date, HashMap<String, Integer>> cookWorkloadingAgregatedByDay = StatisticEventManager.getInstance().getCookWorkloadingAgregatedByDay();
+        if (cookWorkloadingAgregatedByDay.isEmpty()) return;
+        NavigableSet<Date> datesRow = cookWorkloadingAgregatedByDay.descendingKeySet();
+        for (Date date: datesRow) {
+            ConsoleHelper.writeMessage(new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH).format(date));
+            List<Map.Entry<String, Integer>> cooksNameWorkDuration = new ArrayList(cookWorkloadingAgregatedByDay.get(date).entrySet());
+            Collections.sort(cooksNameWorkDuration, new Comparator<Map.Entry<String, Integer>>() {
+                @Override
+                public int compare(Map.Entry<String, Integer> a, Map.Entry<String, Integer> b) {
+                    return b.getValue() - a.getValue();
                 }
+            });
+            for (Map.Entry<String, Integer> cookNameWorkDuration: cooksNameWorkDuration) {
+                ConsoleHelper.writeMessage(String.format("%s - %d min",
+                                cookNameWorkDuration.getKey(),
+                                (int)Math.ceil(cookNameWorkDuration.getValue() / 60.0))
+                );
             }
         }
     }
+    public void printActiveVideoSet() {
+        List<Advertisement> videoSet = StatisticAdvertisementManager.getInstance().getActiveAdvertisements();
+        Collections.sort(videoSet, new Comparator<Advertisement>() {
+            @Override
+            public int compare(Advertisement o1, Advertisement o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        });
+        for (Advertisement advertisement : videoSet) {
+            ConsoleHelper.writeMessage(String.format("%s - %d",
+                    advertisement.getName(),
+                    advertisement.getHits()));
+        }
+    }
 
-    public void printActiveVideoSet() {}
-    public void printArchivedVideoSet() {}
+    public void printArchivedVideoSet() {
+        List<Advertisement> videoSet = StatisticAdvertisementManager.getInstance().getNonActiveAdvertisements();
+        Collections.sort(videoSet, new Comparator<Advertisement>() {
+            @Override
+            public int compare(Advertisement o1, Advertisement o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        });
+        for (Advertisement advertisement : videoSet) {
+            ConsoleHelper.writeMessage(advertisement.getName());
+        }
+    }
 }

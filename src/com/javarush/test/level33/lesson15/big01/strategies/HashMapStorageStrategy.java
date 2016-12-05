@@ -3,11 +3,8 @@ package com.javarush.test.level33.lesson15.big01.strategies;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by HMF on 28.11.2016.
- */
-public class HashMapStorageStrategy implements StorageStrategy
-{
+public class HashMapStorageStrategy implements StorageStrategy {
+
     private HashMap<Long, String> data = new HashMap<>();
 
     @Override

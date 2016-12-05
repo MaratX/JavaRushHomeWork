@@ -11,5 +11,8 @@
     <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-annotations:2.0.4" level="project" />
     <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-databind:2.0.4" level="project" />
     <orderEntry type="library" exported="" name="org.jsoup:jsoup:1.8.3" level="project" />
+    <orderEntry type="library" name="com.google.guava:guava:18.0" level="project" />
+    <orderEntry type="library" name="commons-collections4-4.0" level="project" />
+    <orderEntry type="library" name="junit:junit:4.11" level="project" />
   </component>
 </module>
