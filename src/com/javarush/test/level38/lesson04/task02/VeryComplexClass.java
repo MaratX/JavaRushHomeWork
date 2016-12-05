@@ -12,10 +12,15 @@ package com.javarush.test.level38.lesson04.task02;
 
 public class VeryComplexClass {
     public void methodThrowsClassCastException() {
-        //напишите тут ваш код
+        Object obj = new String();
+        Integer integer = (Integer) obj;
     }
 
     public void methodThrowsNullPointerException() {
-        //напишите тут ваш код
+        Object unknownObject = null;
+
+        if (unknownObject.equals("known")) {
+            System.out.println("OK");
+        }
     }
 }
