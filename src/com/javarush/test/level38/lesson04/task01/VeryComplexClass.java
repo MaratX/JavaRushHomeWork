@@ -6,8 +6,12 @@ package com.javarush.test.level38.lesson04.task01;
 Кинуть исключение (throw) явно нельзя.
 */
 
+import java.io.*;
+
 public class VeryComplexClass {
-    public void veryComplexMethod() throws Exception {
-        //напишите тут ваш код
+    public void veryComplexMethod() throws FileNotFoundException {
+        FileReader fileReader = new FileReader("c:\\temp\\11111.txt");
+
     }
+
 }
