@@ -24,7 +24,7 @@ package com.javarush.test.level38.lesson10.home02;
                         @Author(value = "Витек", position = Position.SENIOR)})
 })
 public class Solution {
-    public static void main(String[] args) {
-        System.out.println(Solution.class.getAnnotation(Changelog.class).toString());
-    }
+        public static void main(String[] args) {
+                System.out.println(Solution.class.getAnnotation(Changelog.class).toString());
+        }
 }
