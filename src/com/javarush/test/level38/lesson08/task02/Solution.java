@@ -9,7 +9,16 @@ import java.util.List;
 Исправь неверные аннотации. Код должен компилировался без ошибок и предупреждений.
 */
 
-@Target(ElementType.TYPE)
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.List;
+
+/* Неверные аннотации
+Исправь неверные аннотации. Код должен компилировался без ошибок и предупреждений.
+*/
+
+@Target(ElementType.METHOD)
 @interface Main {
 }
 
@@ -24,12 +33,12 @@ public class Solution {
     }
 
     public class SubSolution extends Solution {
-        @SafeVarargs
+        @Override
         public void overriddenMethod() {
             System.out.println(uncheckedCall());
         }
 
-        @Override
+        @SuppressWarnings("unchecked")
         List uncheckedCall() {
             List list = new ArrayList();
             list.add("hello");
