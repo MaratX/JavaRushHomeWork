@@ -2,13 +2,12 @@ package com.javarush.test.level26.lesson15.big01;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
- * Created by HMF on 24.11.2016.
+ * Created by Alex on 28.04.2014.
  */
-public final class CurrencyManipulatorFactory {
-
+public final class CurrencyManipulatorFactory
+{
     static HashMap<String, CurrencyManipulator> map = new HashMap<>();
     static boolean isExist = false;
 

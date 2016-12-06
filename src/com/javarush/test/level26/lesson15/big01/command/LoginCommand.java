@@ -1,5 +1,6 @@
 package com.javarush.test.level26.lesson15.big01.command;
 
+
 import com.javarush.test.level26.lesson15.big01.CashMachine;
 import com.javarush.test.level26.lesson15.big01.ConsoleHelper;
 import com.javarush.test.level26.lesson15.big01.exception.InterruptOperationException;
@@ -7,42 +8,42 @@ import com.javarush.test.level26.lesson15.big01.exception.InterruptOperationExce
 import java.util.ResourceBundle;
 
 /**
- * Created by HMF on 24.11.2016.
+ * Created by Alex on 11.05.2014.
  */
-class LoginCommand implements Command {
-
+public class LoginCommand implements Command
+{
     private ResourceBundle validCreditCards = ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "verifiedCards");
     private ResourceBundle res = ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "login_en");
 
     @Override
-    public void execute() throws InterruptOperationException {
-
-        String cardNumber;
-        String pin;
-
+    public void execute() throws InterruptOperationException
+    {
         ConsoleHelper.writeMessage(res.getString("before"));
-
-        while (true) {
-
+        while (true)
+        {
             ConsoleHelper.writeMessage(res.getString("specify.data"));
-            cardNumber = ConsoleHelper.readString();
-            pin = ConsoleHelper.readString();
-
-            if (validCreditCards.containsKey(cardNumber)) {
-
-                if (validCreditCards.getString(cardNumber).equals(pin)) {
-                    ConsoleHelper.writeMessage(res.getString("success.format"));
-                    break;
-                }
-                else {
-                    ConsoleHelper.writeMessage(res.getString("not.verified.format"));
+            String s1 = ConsoleHelper.readString();
+            String s2 = ConsoleHelper.readString();
+            if (validCreditCards.containsKey(s1))
+            {
+                if (validCreditCards.getString(s1).equals(s2))
+                    ConsoleHelper.writeMessage(String.format(res.getString("success.format"), s1));
+                else
+                {
+                    ConsoleHelper.writeMessage(String.format(res.getString("not.verified.format"), s1));
                     ConsoleHelper.writeMessage(res.getString("try.again.or.exit"));
+                    continue;
                 }
             }
-            else {
-                ConsoleHelper.writeMessage(res.getString("not.verified.format"));
+            else
+            {
+                ConsoleHelper.writeMessage(String.format(res.getString("not.verified.format"), s1));
                 ConsoleHelper.writeMessage(res.getString("try.again.with.details"));
+                continue;
             }
+
+            break;
         }
+
     }
 }

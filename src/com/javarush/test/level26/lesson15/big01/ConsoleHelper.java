@@ -10,21 +10,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by HMF on 07.11.2016.
+ * Created by Alex on 28.04.2014.
  */
-public class ConsoleHelper {
-
+public class ConsoleHelper
+{
     private static ResourceBundle res = ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "common_en");
 
-    private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void writeMessage(String message) {
+    public static void writeMessage(String message)
+    {
         System.out.println(message);
     }
 
+    public static void printExitMessage()
+    {
+        ConsoleHelper.writeMessage(res.getString("the.end"));
+    }
 
-    public static String readString() throws InterruptOperationException {
-
+    public static String readString() throws InterruptOperationException
+    {
         String message = "";
         try
         {
@@ -38,31 +43,27 @@ public class ConsoleHelper {
         return message;
     }
 
-
-    public static String askCurrencyCode() throws InterruptOperationException {
-
-        String s;
-        while (true) {
-            writeMessage(res.getString("choose.currency.code"));
-            s = readString();
-            if (s.length() != 3) {
-                writeMessage(res.getString("invalid.data"));
-            }
-            else {
-                s = s.toUpperCase();
+    public static String askCurrencyCode() throws InterruptOperationException
+    {
+        String test;
+        writeMessage(res.getString("choose.currency.code"));
+        while (true)
+        {
+            test = readString();
+            if (test.length() == 3)
                 break;
-
-            }
+            else
+                writeMessage(res.getString("invalid.data"));
 
         }
-        return s;
+        test = test.toUpperCase();
+        return test;
     }
 
-
-    public static String[] getValidTwoDigits(String currencyCode) throws InterruptOperationException {
-
+    public static String[] getValidTwoDigits(String currencyCode) throws InterruptOperationException
+    {
         String[] array;
-        writeMessage(res.getString("choose.denomination.and.count.format"));
+        writeMessage(String.format(res.getString("choose.denomination.and.count.format"), currencyCode));
 
         while (true)
         {
@@ -90,22 +91,23 @@ public class ConsoleHelper {
         return array;
     }
 
-
-    public static Operation askOperation() throws InterruptOperationException {
-
+    public static Operation askOperation() throws InterruptOperationException
+    {
         while (true)
         {
             String line = readString();
-            if (Integer.parseInt(line) > 0 && Integer.parseInt(line) < 5)
+            if (checkWithRegExp(line))
                 return Operation.getAllowableOperationByOrdinal(Integer.parseInt(line));
             else
                 writeMessage(res.getString("invalid.data"));
         }
+
     }
 
-
-    public static void printExitMessage() {
-
-        ConsoleHelper.writeMessage(res.getString("the.end"));
+    public static boolean checkWithRegExp(String Name)
+    {
+        Pattern p = Pattern.compile("^[1-4]$");
+        Matcher m = p.matcher(Name);
+        return m.matches();
     }
 }

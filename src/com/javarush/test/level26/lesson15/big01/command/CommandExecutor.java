@@ -6,14 +6,11 @@ import com.javarush.test.level26.lesson15.big01.exception.InterruptOperationExce
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by HMF on 24.11.2016.
- */
 public class CommandExecutor
 {
     private static Map<Operation, Command> map = new HashMap<>();
-
-    static {
+    static
+    {
         map.put(Operation.LOGIN, new LoginCommand());
         map.put(Operation.INFO, new InfoCommand());
         map.put(Operation.DEPOSIT, new DepositCommand());
@@ -26,6 +23,8 @@ public class CommandExecutor
         map.get(operation).execute();
     }
 
-    public CommandExecutor() {
+    public CommandExecutor()
+    {
     }
+
 }

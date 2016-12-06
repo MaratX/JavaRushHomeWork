@@ -2,7 +2,9 @@ package com.javarush.test.level38.lesson10.home01;
 
 import java.lang.reflect.Field;
 
+
 public final class ReflectionAnnotationUtil {
+
     public static void check(Object someObject) throws IllegalAccessException {
         Class<?> testedClass = someObject.getClass();
         for (Field field : testedClass.getDeclaredFields()) {

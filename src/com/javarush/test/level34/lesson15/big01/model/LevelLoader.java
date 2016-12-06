@@ -18,9 +18,10 @@ public class LevelLoader
     }
     public GameObjects getLevel(int level)
     {
-        int tmpLevel = level;
-        if (tmpLevel > 60)
-            tmpLevel -= 60;
+        int levl = level % 60;
+        if (levl == 0) {
+            levl = 1;
+        }
         HashSet<Wall> walls = new HashSet<>();
         HashSet<Box> boxes = new HashSet<>();
         HashSet<Home> homes = new HashSet<>();
@@ -30,7 +31,7 @@ public class LevelLoader
             int cellSize = Model.FIELD_SELL_SIZE;
             int x0 = cellSize / 2;
             int y0 = cellSize / 2;
-            while (!fileReader.readLine().contains("Maze: " + tmpLevel)) ;
+            while (!fileReader.readLine().contains("Maze: " + levl)) ;
             fileReader.readLine();
             fileReader.readLine();
             double y = Double.parseDouble(fileReader.readLine().split(" ")[2]);
@@ -47,15 +48,14 @@ public class LevelLoader
                         case '@':
                             player = new Player(x0 + j * cellSize, y0 + i * cellSize);
                             break;
-                        case '&':
-                            boxes.add(new Box(x0 + j * cellSize, y0 + i * cellSize));
                         case '*':
                             boxes.add(new Box(x0 + j * cellSize, y0 + i * cellSize));
                             break;
                         case '.':
                             homes.add(new Home(x0 + j * cellSize, y0 + i * cellSize));
                             break;
-                        default:
+                        case '&':
+                            boxes.add(new Box(x0 + j * Model.FIELD_SELL_SIZE, y0 + i * Model.FIELD_SELL_SIZE));
                             break;
                     }
             }
