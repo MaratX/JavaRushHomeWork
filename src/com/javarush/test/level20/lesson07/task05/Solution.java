@@ -15,8 +15,8 @@ public class Solution implements Serializable, Runnable {
     transient private Thread runner;
     private int speed;
 
-    public Solution(int speed) {
-        this.speed = speed;
+    public Solution(int speedd) {
+        speed = speedd;
         runner = new Thread(this);
         runner.start();
     }
